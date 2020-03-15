@@ -1,0 +1,1600 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage[whole]{bxcjkjatype}
+\usepackage{amsmath, amsthm, amssymb, cases}
+\usepackage[all]{xy}
+\def\objectstyle{\displaystyle}
+\usepackage[unicode, bookmarks=true,colorlinks=true]{hyperref}
+% \setminchofont{ipaexm.ttf}
+% \setgothicfont{ipaexg.ttf}
+\usepackage[truedimen,margin=30truemm]{geometry}
+
+\makeatletter
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{section}.\arabic{equation}}
+\@addtoreset{equation}{section}
+\makeatother
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem*{theorem*}{定理}
+\newtheorem{definition}{定義}[section]
+\newtheorem*{definition*}{定義}
+\newtheorem{proposition}{命題}[section]
+\newtheorem*{proposition*}{命題}
+\newtheorem{lemma}{補題}[section]
+\newtheorem*{lemma*}{補題}
+\newtheorem{remark}{注}[section]
+\newtheorem*{remark*}{注}
+\newtheorem{example}{例}[section]
+\newtheorem*{example*}{例}
+\renewcommand\proofname{\bf 証明}
+
+\title{微分方程式系の対称群と保存則\\
+Symmetry Groups and Conservation Laws on Differential Equations}
+\author{渡邉\ 学\thanks{東京理科大学院修了（修士）}\\
+Manabu WATANABE}
+\date{1993-03-31\thanks{Revised Jan. 15, 2017.}}
+\setcounter{chapter}{0}
+\setcounter{section}{0}
+\setcounter{page}{1}
+
+\begin{document}
+\sffamily
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\chapter{序文}
+
+ この論文の目的は、微分方程式系、特に物理的に意味を持つ微分方程式系に対する対称群と保存則、及びハミルトン発展方程式系について、主にOlver\cite{Olver2}, \cite{Olver4}, \cite{Olver5}の内容に沿って考察することである。
+
+ 変分問題のオイラー・ラグランジュ方程式\footnote{オイラー・ラグランジュ方程式は、ラグラジアンの経路積分を最小化する条件として導かれる（最小作用の原理）。}として表現される微分方程式系には、その保存則と対称群との間に対応関係があることがE.ネーターによって証明された。しかしKdV方程式は、無限個の保存則を持つ一方で１パラメータ対称群は４つしか存在せず、対称群の拡張を考える必要が生じた。この拡張された対称群は、一般化対称群、高階対称群などとよばれる。第２章では、2.1節でそのことを整理し、2.2節から2.5節までで再帰作用素(recursion operator)、保存則、ネーターの定理、変分複体(variational complex)等について説明した後、2.6節でKdV-Burgers方程式について実際に対称群を計算した（定理2.6.1）。
+
+ 第３章では、変分問題のオイラー・ラグランジュ方程式として表現される発展方程式系に対し、一般の有限次元ハミルトン系に類似したある構造を構成する。このとき、ハミルトン作用素とよばれる微分作用素が変分問題のポワソン括弧積に対応して決まり、特にこの構造が１つの発展方程式系に対し２つ存在するとき（双ハミルトン系(bi-Hamiltonian)）、２つのハミルトン作用素によって再帰作用素が作られ、無限個の保存則を持つハミルトン系の階層が構成される（レナード・スキーム）。3.1節から3.3節までは、その一般論を整理し、3.4節以降で１次元の具体的な双ハミルトン系を考察する。ここで特に本論文中に定義する「自明な双ハミルトン系」には、レナード・スキームのほかに同じハミルトン作用素で構成される双ハミルトン系はないことが証明された（定理3.4.1）。よってKdV方程式の双ハミルトン系についても同様であろうことが予想される\footnote{なお、本論文の記号等はOlver\cite{Olver4}のものに倣った。}。\\
+
+ つぎに基本事項について整理する。$\mathbf{R^p}\cong \mathbf{X}\ni x=(x_1,\dots,x_p)$をｐ次元の局所座標系をもつ独立変数空間、$\mathbf{R^q}\cong \mathbf{U}\ni u=(u^1,\dots,u^q)$をｑ次元の局所座標系をもつ$x$に従属する変数空間（$u=u(x)$は$C^\infty$級）とする。このとき、$\mathbf{M}\subset \mathbf{X}\times \mathbf{U}$に対して自然な拡張$\mathbf{M}^{(n)}\subset \mathbf{X}\times \mathbf{U}^{(n)}$を考えることができる
+\footnote{$\mathbf{X}\times \mathbf{U}$は$\pi :\mathbf{X}\times \mathbf{U}\longrightarrow \mathbf{X}$という連続写像（射影）を持つベクトルバンドルであり、$\mathbf{X}\times \mathbf{U}$はその全空間(total space)となる。$\mathbf{X}\times \mathbf{U}^{(n)}$はジェット空間とよばれる。全空間は$f:\mathbf{X}\longrightarrow \mathbf{U}$の$C^\infty$級写像全体からなる空間とみることができる。}。$\mathbf{M}^{(n)}$上で定義される写像$\varDelta_v:\mathbf{M}^{(n)}\longrightarrow \mathbf{R}$を微分関数とよび、その族を$\mathcal{A}$とする（$\varDelta_v\in \mathcal{A}\; v=1,\dots,l$）。このとき、微分方程式系は$\varDelta=(\varDelta_1,\dots,\varDelta_l)$として、
+\begin{equation} 
+\varDelta[u] = \varDelta(x,u^{(n)}) = 0 %---(1.0.1)
+\end{equation}
+と表される。ここで$u^{(n)}$はｐ次元の$u$および$q\cdot \binom{p+n}{n}$次元の$u$の偏微分$u^\alpha_J=\frac{\partial^ku^\alpha}{\partial x_{j_1}\dots\partial x_{j_k}}$によって張られた座標であり、$\alpha=1,\dots,q\quad J=(j_1,\dots,j_k)$は二重の添え字で$0\leq j_k\leq p\quad 0\leq k\leq n$である。任意の切断(section)$u=f(x)$ごとに\footnote{切断とは、$\mathbf{X}\times \mathbf{U}$を全空間とするベクトルバンドルの射影を$\pi$としたとき、$\pi\cdot(x_0,f(x_0))=x_0$（恒等写像）が成り立つものをいう。}、$\mathbf{X}\times \mathbf{U}^{(n)}$の切断$u^{(n)}=pr^{(n)}f(x)$を定義し、これを$f$のｎ次延長(prolongation)という。$\mathcal{A}$は微分関数の族と定義したが、ここでは主に微分多項式を扱う。
+
+ $\mathbf{G}$を$\mathbf{M}$上の（局所）変換群とする。$\mathbf{G}\ni g:\mathbf{M}\longrightarrow \mathbf{M}$は$pr^{(n)}g:\mathbf{M}^{(n)}\longrightarrow \mathbf{M}^{(n)}$へと自然に拡張することができ、これを$g$のｎ次延長という\footnote{$g$は切断全体の集合であるグラフ$\Gamma=\{ (x, f(x)); u=f(x) \}\subset \mathbf{X}\times \mathbf{U}$上の変換(transformation)である。}。$\mathbf{G}$が連結である場合\footnote{以下特にことわらない限り、$\mathbf{G}$は連結であるものとする。}、$\mathbf{G}$の要素である$\mathbf{M}$上の変換が$\mathbf{M}$上のベクトル場$v$と一意に対応する状況を考える\footnote{接バンドル$\mathbf{TM}$から$\mathbf{M}$への射影を$\pi$としたとき、$v:\mathbf{M}\longrightarrow\mathbf{TM}$なる$C^\infty$級写像が与えられ、$\pi\cdot v(p)=p$を満たすとき、$v$を$\mathbf{M}$上のベクトル場という。また、ベクトル場が与えられると、$\mathbf{M}$上の微分関数について$v:\mathcal{A}\longrightarrow \mathcal{A}$なる線形写像（微分）が得られ、$\forall P(x,u^{n}),Q(x,u^{n})\in \mathcal{A}$に対してライプニッツ・ルール$v(P\cdot Q)=v(P)\cdot Q+P\cdot v(P)$が成り立つ。}。ベクトル場$v$と対応する$\mathbf{M}$上の１パラメータ局所変換を$g=\exp (\epsilon v)$とし、これらが、
+
+\begin{equation*}
+v\vert_{(x,u)} = \frac{d}{d\epsilon}[\exp (\epsilon v)](x,u)\vert _{\epsilon=0}
+\end{equation*}
+のような関係を満たすとき、この$v$を対応する変換$g$の無限小変換生成子(infinitesimal generator)とよぶ。
+
+\begin{remark*}
+ １パラメータ変換群とは、$\mathbf{G}\ni \forall g_\epsilon =\exp (\epsilon v)$について、
+\begin{align*}
+(i &) \, \exp(\epsilon_1 v) \exp(\epsilon_2 v) = \exp((\epsilon_1+\epsilon_2) v)\\
+(ii&) \, \exp(0v) = 1 \, (\text{恒等変換})
+\end{align*}
+が成り立つもののことをいう。
+
+ すべてのベクトル場が、１パラメータ変換群の無限小変換生成子となるわけではない。１パラメータ変換群の無限小変換生成子となるベクトル場は、完備ベクトル場とよばれる。$\mathbf{M}$が有限次元である場合、$v$の台がコンパクト、つまり$\{ P\in\mathcal{A};v(P)\ne 0\} \subset \mathcal{A}$となるコンパクトな部分集合の外側で$v$が恒等的にゼロであるとき\footnote{解析力学における変分問題で、停留条件を求める際の始点及び終点に係る条件がこれにあたると考えられる。}、$v$は完備である。
+
+ $\mathbf{M}$の$(x,u)$における接空間$T\mathbf{M}|_{(x,u)}$は$\langle \frac{\partial }{\partial x_i},\frac{\partial }{\partial u^\alpha} \rangle$を単位ベクトルとして張られた空間とみることができ、$v$は$\mathbf{M}$上の$C^\infty$級写像に対し$\langle \xi^i(x,u),\phi_\alpha(x,u) \rangle$方向への微分を対応させるベクトル場とみなすことができる。
+\end{remark*}
+
+\begin{example*}
+ 特殊直交群（回転群）$\mathbf{SO(2)}$について、$g_{\epsilon}\in\mathbf{G}\subset \mathbf{SO(2)}$を
+\[
+g_{\epsilon} = \left(
+\begin{array}{cc}
+\cos \epsilon & \sin \epsilon \\
+-\sin \epsilon & \cos \epsilon
+\end{array}
+\right)
+\]
+のように取ると、$\mathbf{G}$は明らかに$\mathbf{R}^2$の各点に対する１パラメータ変換群の条件を満たし、
+\begin{equation*}
+g_{\epsilon}\cdot(x, y) = (x\cos \epsilon - y\sin \epsilon , x\sin \epsilon + y\cos \epsilon)
+\end{equation*}
+となる。また、その無限小変換生成子は、
+\begin{equation*}
+\frac{d}{d\epsilon}(x\cos \epsilon - y\sin \epsilon)\vert_{\epsilon =0}=-y, \qquad \frac{d}{d\epsilon}(x\sin \epsilon + y\cos \epsilon)\vert_{\epsilon =0}=x
+\end{equation*}
+となることから、
+\begin{equation*}
+v = -y\frac{\partial}{\partial x}+x\frac{\partial}{\partial y}
+\end{equation*}
+のように取れる。
+\end{example*}
+
+ この$v$及び$g_{\epsilon}=\exp (\epsilon v)$については、$\mathbf{M}^{(n)}$上の変換と無限小変換生成子として、
+\begin{equation*}
+pr^{(n)}v\vert _{(x,u)} = \frac{d}{d\epsilon}pr^{(n)}[\exp (\epsilon v)](x,u^{(n)})\vert _{\epsilon=0}
+\end{equation*}
+のように自然に拡張される。これを$v$のｎ次延長と定義する。このとき、つぎの定理が成立する。
+
+\begin{theorem}
+\begin{equation*}
+v=\sum^p_{i=1}\xi^i(x,u)\frac{\partial }{\partial x_i} + \sum^q_{\alpha=1}\phi_\alpha(x,u)\frac{\partial }{\partial u^\alpha}
+\end{equation*}
+を$\mathbf{M}\subset \mathbf{X}\times \mathbf{U}$上のベクトル場であるとする。このとき(1.2)で定義した$v$のｎ次延長は、
+\begin{equation*}
+pr^{(n)}v = v + \sum_{\alpha\leq p,\#J\leq n}\phi_\alpha^J(x,u^{(n)})\frac{\partial }{\partial u^\alpha_J}
+\end{equation*}
+\begin{equation*}
+\phi_\alpha^J(x,u^{(n)}) = \mathcal{D}_J(\phi_\alpha - \sum^p_{i=1}\xi^iu^\alpha_i) + \sum^p_{i=1}\xi^iu^\alpha_{J,i}
+\end{equation*}
+と表すことができる（Olver\cite[Chap.2]{Olver4}）。
+\end{theorem}
+
+ ここで$\mathcal{D}_J$は、$\mathcal{D}_J=\mathcal{D}_{j_1}\dots\mathcal{D}_{j_k}\; (\#J=k)$、$\mathcal{D}_{j_r}=\frac{\partial }{\partial x_{j_r}}+\sum u^\alpha_{J,j_r}\frac{\partial }{\partial u^\alpha_J}$
+と定義されるもので、全微分作用素という。
+
+ 微分方程式系(1.0.1)に対して、
+\begin{equation}
+(\mathcal{D}_J\varDelta)(x,u^{(n+m)}) = 0 \qquad (0\leq \#J\leq m) %---(1.0.2)
+\end{equation}
+を(1.0.1)のｍ次延長という\footnote{(1.0.2)は、(1.0.1)の$\mathbf{M}^{(n)}\ni (x,u^{(n)})$におけるヤコビ行列である。}。(1.0.2)が全て（$\mathbf{M}^{(n+m)}$上で）最大階数$m$でかつ局所可解であるとき、完全非退化(totally nondegenerate)であるという。これ以後特に断らない限り、ここで取り扱う微分方程式系は全て完全非退化とする。
+
+ 微分作用素$\mathcal{E}=\sum_{\alpha ,J} (-\mathcal{D})_J\frac{\partial }{\partial u^\alpha_J}\; (\alpha=1,\dots,q\; (-\mathcal{D})_J=(-1)^{\#J}\mathcal{D}_J)$をオイラー作用素という。このとき、変分問題
+\begin{equation}
+\mathcal{L}[u] = \int _\Omega L(x,u^{(n)})dx\qquad \Omega\subset \{ x;(x,u)\in \mathbf{M} \} %---(1.0.3)
+\end{equation}
+に対するオイラー・ラグランジュ方程式は$\mathcal{E}(L)=0$となる。
+
+\begin{remark*}
+ $x=(x_i), \, u=(u^\alpha )$としたとき、オイラー・ラグランジュ方程式は、
+\begin{align}
+\mathcal{E}(L) &= \sum_\alpha\frac{\partial L}{\partial u^\alpha} - \sum_{\alpha ,i}\frac{d}{dx_i}\frac{\partial L}{\partial u_{x_i}^\alpha} + \sum_{\alpha ,i,j}\frac{d^2}{dx_idx_j}\frac{\partial L}{\partial u_{x_ix_j}^\alpha} - \cdots\nonumber\\
+&\fallingdotseq \sum_{\alpha ,i}[\frac{\partial L}{\partial u^\alpha} - \frac{d}{dx_i}\frac{\partial L}{\partial u_{x_i}^\alpha}] = 0
+\end{align}
+となる。これは変分問題$\mathcal{L}[u]$の停留条件となることがわかる（後述の(2.5.5)を参照）。
+\end{remark*}
+
+\newpage
+
+\chapter{対称群と保存則}
+
+\section{幾何学的対称群と一般化対称群}
+
+ $\mathbf{X}\ni x=(x_1,\dots,x_p)\; \mathbf{U}\ni u=(u_1,\dots,u_q)$として、
+\begin{equation}
+\varDelta(x,u^{(n)}) = 0 %---(2.1.1)
+\end{equation}
+をある微分方程式系とする。また、前章で定義した空間$\mathbf{M}$上の（局所）変換群$\mathbf{G}$について、$\mathbf{G}\ni \forall g:\mathbf{M}\longrightarrow \mathbf{M}$が、微分方程式系(2.1.1)の解$u=f(x)$（$f$は$C^\infty$級）に対し
+\begin{equation*}
+(\bar{x},\bar{u}) = g\cdot (x,u)
+\end{equation*}
+となるように作用し、$\bar{u}=\bar{f}(\bar{x})$（$\bar{f}$は$C^\infty$級）が再び(2.1.1)の解となるとき、$\mathbf{G}$を微分方程式系(2.1.1)に対する対称群という。
+
+\begin{theorem}
+\begin{equation*}
+\varDelta_v(x,u^{(n)}) = 0\qquad (v=1,\dots,l)
+\end{equation*}
+を非退化微分方程式系としたとき、$\mathbf{G}$がこの微分方程式系の対称群となる必要十分条件は、$C^\infty$級の解空間、
+\begin{equation*}
+\Phi = \{ (x,u); \varDelta_v(x,u^{(n)}) = 0\; (v=1,\dots,l) \}
+\end{equation*}
+に対し、$\forall (x,u^{(n)})\in \Phi$において、
+\begin{equation}
+pr^{(n)}v[\varDelta_v(x,u^{(n)})] = 0 %---(2.1.2)
+\end{equation}
+が成立することである。ただし、$v$は$\mathbf{G}\ni \forall g$の無限小変換生成子であり、$pr^{(n)}v$はその延長である（Olver\cite[Chap.2]{Olver4}）。
+\end{theorem}
+
+ 上記の$pr^{(n)}v$が$u$の微分に従属せず$\mathbf{X}\times \mathbf{U}$の範囲で記述される場合、$\mathbf{G}$を幾何学的対称群といい、$v$はその要素に対する無限小変換生成子である。ただし一般には、$v$はつぎのように拡張される。幾何学的対称群（の要素に対する無限小変換生成子）は、
+\begin{equation}
+v = \sum ^p_{i=1}\xi^i(x,u)\frac{\partial }{\partial x_i} + \sum ^q_{\alpha=1}\phi_\alpha(x,u)\frac{\partial }{\partial u^\alpha} %---(2.1.3)
+\end{equation}
+という$\mathbf{X}\times \mathbf{U}$上のベクトル場として表されるが、この定義域をジェット空間$\mathbf{X}\times \mathbf{U}^{(n)}$に拡張し、
+\begin{equation}
+v = \sum ^p_{i=1}\xi^i(x,u^{(n)})\frac{\partial }{\partial x_i} + \sum ^q_{\alpha=1}\phi_\alpha(x,u^{(n)})\frac{\partial }{\partial u^\alpha} %---(2.1.4)
+\end{equation}
+と表したものを一般化ベクトル場という。ここで、前に定義した幾何学的対称群を一般化ベクトル場の範囲に拡張することとするが、それは$\mathbf{M}$上の１パラメータ変換群のように、それ自体幾何学的な意味を持つものとはならない。よって、つぎのように（形式的に）定義することとする。
+
+\begin{definition}
+ (2.1.4)のように表された$v$が微分方程式系(2.1.1)の一般化対称群、または単に対称群（実際には、その要素に対する無限小変換生成子（以下同じ））であるということは、解空間$\Phi$上で、
+\begin{equation}
+pr^{(n)}v[\varDelta_v] = 0 %---(2.1.5)
+\end{equation}
+が成立することである。ただし$pr^{(n)}v$は、(2.1.4)で定義された$v$に対して、
+\begin{equation}
+pr^{(n)}v = \sum ^p_{i=1}\xi^i(x,u^{(n)})\frac{\partial }{\partial x_i} + \sum ^q_{\alpha=1}\sum _{0\leq \#J\leq n}\phi_\alpha^J(x,u^{(n)})\frac{\partial }{\partial u^\alpha_J} %---(2.1.6)
+\end{equation}
+\begin{equation*}
+\phi_\alpha^J(x,u^{(n)}) = \mathcal{D}_J(\phi_\alpha - \sum^p_{i=1}\xi^iu^\alpha_i) + \sum^p_{i=1}\xi^iu^\alpha_{J,i}
+\end{equation*}
+という無限和で（形式的に）定義する\footnote{$\xi\; \phi$の引数である$u$の微分$u^{(n)}$の次数は、対応する偏微分の次数と同じかそれよりも小さい。}。
+\end{definition}
+
+ つぎに(2.1.6)で定義された$pr^{(n)}v$ごとに、
+\begin{equation*}
+Q_\alpha = \phi_\alpha(x,u^{(n)}) - \sum ^p_{i=1}\xi^iu^\alpha_i
+\end{equation*}
+と表される微分関数の系を特性(characteristic)といい、また
+\begin{equation}
+v_Q = \sum ^p_{\alpha=1}Q_\alpha(x,u^{(n)})\frac{\partial }{\partial u^\alpha_J} %---(2.1.7)
+\end{equation}
+と表されるベクトル場を$v$の発展形式(evolutional form)という。ここで$v_Q$の延長は、定義より、
+\begin{equation*}
+pr^{(n)}v_Q = \sum ^q_{\alpha=1}\sum _{0\leq \#J\leq n}(\mathcal{D}_JQ_\alpha)\frac{\partial }{\partial u^\alpha_J}
+\end{equation*}
+という簡単な形に表すことができる。ここでつぎのことが成立する。
+
+\begin{proposition}
+ (2.1.4)で表された$v$が微分方程式系(2.1.1)の対称群であるとき、$v_Q$もまたそうである。
+\end{proposition}
+
+\begin{proof}
+ 定義より、
+\begin{align*}
+pr^{(n)}v &= \sum ^p_{i=1}\xi^i(x,u^{(n)})\frac{\partial }{\partial x_i} + \sum ^q_{\alpha=1}\sum _{0\leq \#J\leq n}(\mathcal{D}_JQ_\alpha + \sum ^p_{i=1}\xi^iu^\alpha_{J,i})\frac{\partial }{\partial u^\alpha_J} \\
+&= \sum ^q_{\alpha=1}\sum _{0\leq \#J\leq n}\mathcal{D}_JQ_\alpha\frac{\partial }{\partial u^\alpha_J} + \sum ^p_{i=1}\xi^i(\frac{\partial }{\partial x_i} + \sum ^q_{\alpha=1}\sum _{0\leq \#J\leq n}u^\alpha_{J,i}\frac{\partial }{\partial u^\alpha_J})
+\end{align*}
+\begin{equation}
+\therefore \; pr^{(n)}v = pr^{(n)}v_Q + \sum ^p_{i=1}\xi^i\mathcal{D}_i %---(2.1.8)
+\end{equation}
+よって、解空間$\Phi$上で
+\begin{equation*}
+pr^{(n)}v_Q[\varDelta_v(x,u^{(n)})] = 0
+\end{equation*}
+が成立する。
+\end{proof}
+
+\begin{remark*}
+ $Q(x,u^{(n)})$が解空間$\Phi$上でゼロになるとき、$v_Q$はその自明な対称群である。またこれをもとに、対称群の同値性が導かれる。つまり、$v-w$の特性が解空間$\Phi$上でゼロとなるとき、$v,w$はその微分方程式系に対する同値な対称群となる。
+\end{remark*}
+
+\begin{example*}
+ KdV方程式、
+\begin{equation}
+u_t = uu_x + u_{xxx}  %---(2.1.9)
+\end{equation}
+の場合、幾何学的な範囲で対称変換を求めると、その特性は、
+\begin{align}
+Q_1[u] &= u_x \nonumber\\
+Q_2[u] &= u_t \nonumber\\
+Q_a[u] &= tu_x + 1 \nonumber\\
+Q_b[u] &= xu_x + 3tu_t - 2u %---(2.1.10)
+\end{align}
+なる微分関数で１次独立に取れる（2.6節）また、これを一般化ベクトル場の形にすると、
+\begin{align*}
+v_1 &= \frac{\partial}{\partial t} \qquad &\text{（時間並進）}\\
+v_2 &= \frac{\partial}{\partial x} \qquad &\text{（空間並進）}\\
+v_a &= t\frac{\partial}{\partial x} - \frac{\partial}{\partial u} \qquad &\text{（ガリレイブースト）}\\
+v_b &= x\frac{\partial}{\partial x} + 3t\frac{\partial}{\partial t} + 2u\frac{\partial}{\partial u} \qquad &\text{（スケーリング）}
+\end{align*}
+となる。
+\end{example*}
+
+ つぎに一階の常微分方程式系
+\begin{equation}
+\frac{du^v}{dt} = P_v(t,u)\qquad (v=1,\dots,l) %---(2.1.11)
+\end{equation}
+について考える。(2.1.11)に対する対称群を発展形式で
+\begin{equation}
+v_Q = \sum _{\alpha=1}^lQ_\alpha(t,u,u_t,u_{tt},\dots)\frac{\partial }{\partial u^\alpha} %---(2.1.12)
+\end{equation}
+とおく。ここで(2.1.11)をｋ回微分すると、
+\begin{equation*}
+\frac{d^ku^v}{dt^k} = P_{v^k}(t,u^{(k-1)})\qquad (v=1,\dots,l\; k=1,2,\dots)
+\end{equation*}
+となり、これらを(2.1.12)に対し、より高次の$u^v$の微分から順に代入すると、
+\begin{equation*}
+w_{\bar{Q}} = \sum_{\alpha=1}^l \bar{Q}_\alpha (t,u)\frac{\partial }{\partial u^\alpha}
+\end{equation*}
+となる。また$v_{Q}$と$w_{\bar{Q}}$は同値である。一般に、ｎ階常微分方程式はｎ個の一階常微分方程式系で表すことができる。このことからつぎの命題が成立する。
+
+\begin{proposition}
+ 常微分方程式系の対称群は、本質的に幾何学的対称群に限られる。
+\end{proposition}
+
+\section{再帰作用素}
+
+ (2.1.7)で定義した$\exists v_Q$が微分方程式系(2.1.1)の対称群であるとき、ある作用素
+\begin{equation*}
+\mathcal{R} : \mathcal{A}^q\longrightarrow \mathcal{A}^q
+\end{equation*}
+に関し$v_{\mathcal{R}Q}$が再び(2.1.1)の対称群となるとき、$\mathcal{R}$を微分方程式系(2.1.1)に対する再帰作用素という\footnote{再帰作用素は、一つの対称変換から無限個の対称変換を生成する作用素となる。}。
+
+ ここで、ある作用素が再帰作用素となるための条件を考えるが、その前にフレシェ微分について述べる。$\mathcal{A}^r\ni P[u]=P(x,u^{(n)})$におけるフレシェ微分$\mathcal{D}_P:\mathcal{A}^q\longrightarrow \mathcal{A}^r$を、
+\begin{equation*}
+\mathcal{D}_PQ[u] = \frac{d}{d\epsilon}P[u + \epsilon Q[u]]\vert _{\epsilon=0}\qquad (\forall Q \in \mathcal{A}^q)
+\end{equation*}
+と定義すると、有限次元微分関数$P=P(P_1,\dots,P_r)$に対するフレシェ微分は$q\times r$行列作用素
+\begin{equation*}
+(\mathcal{D}_P)_{\mu\nu} = \sum _J\frac{\partial P_\mu}{\partial u^\nu_J}\mathcal{D}_J\qquad (\mu=1,\dots,r\; \nu=1,\dots,q)
+\end{equation*}
+で表せる。よって、$\forall Q\in \mathcal{A}^q$に対して、
+\begin{equation}
+\mathcal{D}_PQ[u] = pr^{(n)}v_Q (P) %---(2.2.1)
+\end{equation}
+が成り立つ（下の注を参照）。
+
+\begin{theorem}
+ 線形作用素$\mathcal{R} : \mathcal{A}^q\longrightarrow \mathcal{A}^q$が微分方程式系(2.1.1)の再帰作用素であることの必要十分条件は、解空間$\Phi$上で
+\begin{equation*}
+\mathcal{D}_\varDelta\cdot \mathcal{R} = \bar{\mathcal{R}}\cdot \mathcal{D}_\varDelta\qquad (\exists \bar{\mathcal{R}}: \mathcal{A}^q\longrightarrow \mathcal{A}^q)
+\end{equation*}
+（$\bar{\mathcal{R}}$は線形作用素）が成立することである。
+\end{theorem}
+
+\begin{proof}
+ (2.2.1)と対称群の定義から明らか。
+\end{proof}
+
+\begin{example*}
+ KdV方程式の場合、
+\begin{equation*}
+\mathcal{R} = \mathcal{D}_x^2 + \frac{2}{3}u + \frac{1}{3}u_x\mathcal{D}_x^{-1}
+\end{equation*}
+は再帰作用素となる。ただし$\mathcal{D}_x^{-1}$はここでは形式的に$Im\mathcal{D}_x\subset \mathcal{A}$上で定義される作用素であると考え、$\mathcal{D}_x^{-1}\cdot \mathcal{D}_x=\mathcal{D}_x\cdot \mathcal{D}_x^{-1}=id$であるとする。（実際には、ある微分関数$\Delta[u]$に対し、$\Delta$が積分可能な領域を$\Omega$として
+\begin{equation*}
+\mathcal{D}_x^{-1}(\Delta)=\int_\Omega\Delta dx+C \qquad (\forall C\in\mathbf{R})
+\end{equation*}
+とみなした場合からわかるように、$\mathcal{D}_x^{-1}$を一意的に決定することはできない。）
+
+ 実際、$\varDelta=u_t-u_{xxx}-uu_x$に対して、
+\begin{equation*}
+\mathcal{D}_\varDelta = \mathcal{D}_t - \mathcal{D}_x^3 - u\mathcal{D}_x - u_x
+\end{equation*}
+となるが、これはKdV方程式の解空間$\Phi$上で$\mathcal{D}_\varDelta\cdot \mathcal{R}=\mathcal{R}\cdot \mathcal{D}_\varDelta$を成立させるので、定理 2.2.1より$\mathcal{R}$は再帰演算子となる。また、前節で計算した対称群の特性(1.1.10)に対し、
+\begin{align*}
+\mathcal{R}Q_1 = Q_2 \\
+\mathcal{R}Q_a = Q_b
+\end{align*}
+が成立し、さらに最初の式について、
+\begin{equation}
+\mathcal{R}Q_{n} = Q_{n+1}\qquad (n=1,2,\dots) %---(2.2.2)
+\end{equation}
+と拡張することができる（3.4節）。しかし、最後の式では$Q_b$について$\mathcal{D}_x^{-1}$の作用を定義することができず、これ以上対称群の特性を計算することはできない。
+\end{example*}
+
+\begin{remark*}
+ $P$のジェット空間上の変数$u^\alpha_J$の$\epsilon$による微分は、(2.1.6)より$D_JQ[u]$に等しくなる。すなわち、
+\begin{align*}
+\frac{\partial}{\partial \epsilon}P[u+\epsilon Q]|_{\epsilon = 0} &= \sum_{\alpha ,J}\frac{\partial P}{\partial u_J^\alpha}\frac{\partial  u_J^\alpha}{\partial \epsilon}|_{\epsilon = 0}\\
+&= \sum_{\alpha ,J}\frac{\partial P}{\partial u_J^\alpha}[u] \cdot (\mathcal{D}_JQ_\alpha)[u]\\
+&= \sum_{\alpha ,J}(\mathcal{D}_JQ_\alpha)\frac{\partial P}{\partial u_J^\alpha}\\
+&= prv_Q(P)
+\end{align*}
+である。
+\end{remark*}
+
+\section{保存則}
+
+ 微分方程式系(2.1.1)に対する保存則とは、その解空間$\Phi$上で成立する発散(divergence)
+\begin{equation}
+\mathfrak{Div}P[u] = \mathcal{D}_1P[u]+ \dots +\mathcal{D}_pP[u] = 0 %---(2.3.1)
+\end{equation}
+のことである\footnote{以後、微分関数の独立変数を省略し、$P(x,u^{(n)})=P[u]$と表記する。}（ただし、$\exists P=(P_1,\cdots,P_p)\in \mathcal{A}^p$）。
+
+ $u=u(t,x),\; x=x(x_1,\dots,x_p)$と表せるとき（つまり、時間変数を持つとき）、保存則は
+\begin{equation}
+\mathcal{D}_tT(x,t,u) + \mathfrak{Div}X(x,t,u) = 0\qquad (\exists T\in \mathcal{A}\; \exists X\in \mathcal{A}^p) %---(2.3.2)
+\end{equation}
+と表現される。(2.3.2)において$T$を保存密度(conserved density)、$X$を流束(flux)という。ここで
+\begin{equation}
+\mathcal{T}_\Omega[t;u] = \int _\Omega T(t,x,u)dx\qquad (\Omega\subset \Phi) %---(2.3.3)
+\end{equation}
+という汎関数をとり、これを$t$で微分すると、ガウスの発散定理(divergence theorem)により
+\begin{align*}
+\mathcal{D}_t\mathcal{T}_\Omega[t;u] &= \int _\Omega \mathcal{D}_tT(t,x,u)dx \\
+&= -\int _\Omega \mathfrak{Div}X(t,x,u)dx \\
+&= \int _{\partial \Omega }X(t,x,u)dx
+\end{align*}
+となる（ただし、最後の式は$\Omega$の閉包$\partial \Omega$上の法線面積分）。$\Omega$は$\forall u=f(x)$のコンパクトな台\footnote{$\mathbf{X}\times \mathbf{U}$の任意の切断$f$に対する台とは、$\{ x;f(x)\neq 0 \}\subset \mathbf{X}$である$x$の部分集合の外側で、$f$が恒等的にゼロであるもののことをいう。}を含むものとしていることから、一般に$X(t,x,0)\equiv 0$であり、この場合$u_J(t,x)\rightarrow 0\; (x\rightarrow \partial \Omega)$であるならば、$\mathcal{T}_\Omega$は(2.1.1)の解空間$\Phi$における保存則を表す。
+
+\begin{remark*}
+ つぎの二つの場合、自明な保存則という。\\
+1) (2.1.1)の解空間$\Phi$上で$P[u]\equiv 0$ \\
+2) $\mathfrak{Div}P \equiv 0$
+\end{remark*}
+
+ これにより、保存則に同値性を導入し、その剰余類のもとで同値な保存則を一意に考えることができる。$\mathfrak{Div}P[u]$が(2.1.1)の保存則であるとき、$\forall Q[u]$に対し、
+\begin{equation}
+\mathfrak{Div}P[u] = Q[u]\varDelta[u] %---(2.3.4)
+\end{equation}
+なる保存則はすべて同一視される。このとき$Q[u]$は$Q=\sum_J(-\mathcal{D})_JQ^J$という形をとり、これをこの保存則の特性という（Olver\cite[Chap.4]{Olver4}）。ここで、つぎの定理が成立する。
+
+\begin{theorem}
+ $\mathfrak{Div}P = Q[u]\varDelta[u]$および$\mathfrak{Div}\bar{P} = \bar{Q}[u]\varDelta[u]$がともに(2.1.1)の保存則であるとき、その解空間$\Phi$上で
+\begin{equation*}
+Q[u] - \bar{Q}[u] = 0
+\end{equation*}
+が成立する。つまり、$Q[u]$と$\bar{Q}[u]$は同値な特性となる（Olver\cite[Chap.4]{Olver4}）。
+\end{theorem}
+
+ つぎに$Q[u]$が保存則の特性となる条件を考えるが、その前に随伴作用素(adjoint operator)を定義する。$P,\; Q\in \mathcal{A}$が$u=0$において$P[0]=Q[0]=0$、また$\Omega\subset \mathbf{X}$において$\forall u=f(x)$に対し$f$の台が$\Omega$においてコンパクトであるとき、微分作用素$\mathfrak{D}$に対する随伴作用素$\mathfrak{D}^*$を
+\begin{equation*}
+\int _\Omega P[u](\mathfrak{D}Q[u])dx = \int _\Omega Q[u](\mathfrak{D}^*P[u])dx
+\end{equation*}
+を成立させるものとして定義する。
+
+\begin{remark*}
+ 一般に、非退化（正則）な双一次形式$\langle\cdot ,\cdot\rangle$を内積という。ここで、
+\begin{equation*}
+\langle P, Q\rangle = \int_\Omega P[u]Q[u] dx
+\end{equation*}
+とおくと、これは内積の定義を満たす。また、内積および有界線形作用素$\frak{D}$に対し、
+\begin{equation*}
+\langle \frak{D}P, Q\rangle = \langle P, \frak{D}^* Q\rangle
+\end{equation*}
+を満たす有界線形作用素$\frak{D}^*$が一意に存在し（リースの表現定理）、これを随伴作用素という。
+\end{remark*}
+
+ ここで$\mathfrak{D}=\sum_J P_J[u]\mathcal{D}_J(=\mathcal{D}_P)\, (P_J\in \mathcal{A})$とするとき（フレシェ微分）、部分積分およびガウスの発散定理より、
+\begin{align*}
+\int _\Omega P[u](\sum _J &P_J[u] \mathcal{D}_JQ[u])dx = \sum _{\alpha,J} \{ \int_\Omega \mathcal{D}_{j_1} [P[u]\frac{\partial P_\alpha}{\partial u^\alpha_J}\mathcal{D}_{J-j_{j_1}}Q[u] ] dx \\
+&+ \int _\Omega (-\mathcal{D}_{j_1})[P[u]\frac{\partial P_\alpha}{\partial u^\alpha_J}] \mathcal{D}_{J-{j_1}}Q[u]dx \} \\
+&=\sum _{\alpha,J} \{ \int _{\partial \Omega} P[u]\frac{\partial P}{\partial u^\alpha_J}\mathcal{D}_{J-{j_1}}Q[u] dx_1\wedge \cdots \wedge dx_{j_1-1} \wedge dx_{j_1+1} \wedge dx_p \\
+&+ \int _\Omega (-\mathcal{D}_{j_1})[P[u]\frac{\partial P_\alpha}{\partial u^\alpha_J}] \mathcal{D}_{J-{j_1}}Q[u]dx \}
+\end{align*}
+右辺第一項は、$\Omega$の境界条件からゼロとなり、またこの操作を繰り返すことで、
+\begin{equation*}
+\int _\Omega P[u](\sum _JP_J[u]\mathcal{D}_JQ[u])dx = \int _\Omega Q[u]\sum _J(-\mathcal{D})_J(P_J[u]P[u])dx
+\end{equation*}
+となるため、$\mathfrak{D}^*=\sum_J (-\mathcal{D})_J [ P_J[u]\cdot\; ]$となる。また$\mathfrak{D}$が行列作用素$\mathfrak{D}:\mathcal{A}^r\longrightarrow \mathcal{A}^k$であるとき、その随伴作用素$\mathfrak{D}^*:\mathcal{A}^k\longrightarrow \mathcal{A}^r$は
+\begin{equation*}
+(\mathfrak{D}^*)_{\mu\nu}=(\mathcal{D}_{P}^*)_{\mu\nu} = \sum _J(-\mathcal{D})_J[\frac{\partial P_\mu[u]}{\partial u^\nu_J}\cdot \quad ]
+\end{equation*}
+として表現される。
+
+ １章で定義したオイラー作用素は、
+\begin{align}
+\mathcal{E}_\nu(P[u]Q[u]) &= \sum _{\alpha,J} (-\mathcal{D})_J \frac{\partial }{\partial u^\alpha_J} [P[u]Q[u]] \nonumber\\
+&= \sum _{\alpha,J} (-\mathcal{D})_J [\frac{\partial P_\alpha}{\partial u^\alpha_J}Q[u] + \frac{\partial Q_\alpha}{\partial u^\alpha_J}P[u]] \nonumber\\
+&= \mathcal{D}_{P}^*Q[u] + \mathcal{D}_{Q}^*P[u] %---(2.3.5)
+\end{align}
+を満たす。ここで後述するポワンカレの補題の拡張から（(2.5.8)を参照）、$\mathcal{E}(L)=0\; (\forall L\in \mathcal{A})$であることの必要十分条件は$L=\mathfrak{Div}P\; (\exists P\in \mathcal{A})$となり、これを使うと、(2.1.1)の保存則(2.3.1)に対して、
+\begin{equation*}
+0 = \mathcal{E}(\mathfrak{Div}P[u]) = \mathcal{E}(Q[u]\varDelta[u]) = \mathcal{D}_{Q}^*\varDelta[u] + \mathcal{D}_{\varDelta}^*Q[u]
+\end{equation*}
+が成立する。よって次の命題が成立する。
+
+\begin{proposition}
+ $Q[u]$が(2.1.1)の保存則の特性であることの必要十分条件は
+\begin{equation}
+\mathcal{D}_{Q}^*\varDelta[u] + \mathcal{D}_{\varDelta}^*Q[u] = 0 %---(2.3.6)
+\end{equation}
+が成立することである。
+\end{proposition}
+
+\section{変分対称群とネーターの定理}
+
+ $\mathbf{G}$を2.1節と同様に$\mathbf{M}(\subset \Omega\times \mathbf{U})\subset \mathbf{X}\times \mathbf{U}$上で作用する（局所）変換群とし、$\Omega$上で定義される任意の$C^\infty$級の切断$u=f(x)$に対し、変分問題
+\begin{equation}
+\mathcal{L}[u] = \int _\Omega L(x,u^{(n)})dx %---(2.4.1)
+\end{equation}
+を考える。ここで2.1節で述べた$\mathbf{G}$の変換によって、この変分問題は
+\begin{equation*}
+\mathcal{\bar{L}}[\bar{u}] = \int _{\bar{\Omega}} \bar{L}(\bar{x},\bar{u}^{(n)})d\bar{x}
+\end{equation*}
+へと一般に変換されるとする。ただし、$C^\infty$級切断$\bar{u}=\bar{f}(\bar{x})$は$\bar{\Omega}\subset \Omega$上で定義されるものとする。ここで
+\begin{equation*}
+\int _{\bar{\Omega}} \bar{L}(\bar{x},pr^{(n)}\bar{f}(\bar{x}))d\bar{x} = \int _\Omega L(x,pr^{(n)}f(x))dx
+\end{equation*}
+が成り立つとき、$\mathbf{G}$を変分対称群という。
+
+\begin{theorem}
+ $\mathbf{G}$；$\mathbf{M}\subset\mathbf{X}\times\mathbf{U}$における（局所）変換群が変分問題(2.4.1)の変分変換群であることの必要十分条件は、$\mathbf{G}$の任意の無限小変換生成子(2.1.3)に対し、
+\begin{equation}
+pr^{(n)}v(L[u]) = L[u]\mathfrak{Div}\xi[u] = 0 %---(2.4.2)
+\end{equation}
+（ただし、$\xi[u] = (\xi^1[u],\cdots.\xi^p[u])$）が成り立つことである（Olver\cite[Chap.4]{Olver4}）。
+\end{theorem}
+
+ つぎに、この$v$を一般化ベクトル場の範囲に拡張して定義する。
+
+\begin{definition}
+ (2.1.4)のように表された$v$が変分問題(2.4.1)の変分対称群であるということは、
+\begin{equation}
+\mathfrak{Div}B[u] = pr^{(n)}v(L[u]) + L[u]\mathfrak{Div}\xi[u] %---(2.4.3)
+\end{equation}
+（$\mathcal{A}\ni \exists B[u]$）が成立することである（ただし、$pr^{(n)}v$は(2.1.6)と同様）。
+\end{definition}
+
+\begin{remark*}
+ 幾何学的な範囲で(2.4.3)により定義される$v$を発散対称群という。これは、上述の一般化された変分対称群とは区別される。実際には(2.4.2)の条件は制約が強く、ほとんどの議論は発散対称群の範囲で十分である。
+\end{remark*}
+
+\begin{proposition}
+ $v$を(2.4.1)の変分対称群とし、$v_Q$をその発展形式とする。このとき$v_Q$もまた(2.4.1)の変分対称群となる。
+\end{proposition}
+
+\begin{proof}
+ (2.1.8)より、
+\begin{equation*}
+pr^{(n)}v(L[u]) + L[u]\mathfrak{Div}\xi[u] = pr^{(n)}v_Q(L[u]) + \sum^p_{i=1}\mathcal{D}_i(\xi^i[u]L[u])
+\end{equation*}
+よって(2.4.3)が成立するとき、
+\begin{equation}
+pr^{(n)}v_Q(L[u]) = \mathfrak{Div} \bar{B}[u]\qquad \bar{B}_i[u] = B_i[u] - L[u]\xi^i[u] %---(2.4.4)
+\end{equation}
+（ただし、$B[u]=(B_1[u],\cdots.B_p[u])$）となる。
+\end{proof}
+
+\begin{theorem}
+ $v$を(2.4.1)の変分対称群とすると、$v$はそのオイラー・ラグランジュ方程式$\mathcal{E}(L[u])=0$の対称群となる（2.5節の補題）。
+\end{theorem}
+
+ ここで2.3節で述べた保存則との関係について、ネーターの定理とよばれるつぎの重要な結果が得られる。
+
+\begin{theorem}
+ $v$を(2.4.1)の変分対称群、$Q[u]$を$v$の特性とすると、$Q[u]$はオイラー・ラグランジュ方程式の保存則の特性である。つまり、
+\begin{equation}
+\mathfrak{Div}P[u] = Q[u]\mathcal{E}(L[u])
+\end{equation}
+と表せる。また、特にこのオイラー・ラグランジュ方程式が完全非退化であるとき、その保存則と変分問題の変分対称群は同値性を考慮し１対１対応する。（(2.3.4)および定理2.4.2から明らか。）
+\end{theorem}
+
+\section{変分複体}
+
+ $\mathbf{X}$上の完全ｒ次微分形式(totally differential r-form)を
+\begin{equation}
+\omega = \sum _J P[u] dx^J\qquad dx^J = {}^t( dx^{j_1},\cdots, dx^{j_r} ) %---(2.5.1)
+\end{equation}
+（ただし、$J=(j_1,\cdots,j_r)$、$1\leq j_1\leq \cdots \leq j_r\leq p$）と定義する\footnote{無限小変換生成子$v|_p$を$\mathbf{M}$上の接空間$\mathbf{T}\mathbf{M}|_p$の要素と考えると、$\omega |_p$は余接空間$\mathbf{T}^*\mathbf{M}|_p$の要素のｒ次外積代数となり、$\wedge^{r} \mathbf{T}^*\mathbf{M}|_p$の要素とみることができる。特にｒ＝１のとき、$\omega|_p\in\mathbf{T}^*\mathbf{M}|_p$は余接ベクトルとなり、$\mathbf{T}\mathbf{M}|_p$上の線形写像とみることができる。}。これに対する作用$\mathcal{D}$を
+\begin{equation*}
+\mathcal{D} \omega = \sum _{i=1}^p \sum _J \mathcal{D}_i P[u] dx^i\wedge dx^J
+\end{equation*}
+と定義する。ここで$u$をある切断に制限すると、$\mathcal{D}$は$\mathbf{X}$上の微分形式に対する外微分と同じである。定義より$\mathcal{D}^2 \omega=0$となる。完全ｒ次微分形式の全空間は$\mathbf{\Lambda}_r$と表す。
+
+ $\mathbf{M}\subset \mathbf{X}\times \mathbf{U}$において、空間$\mathbf{M}_\mathbf{U}=\{ u;(x,u)\in \mathbf{M} \}$が凸集合(star shape)\footnote{$\bar{x}\in \mathbf{X}$が存在し、$\forall x\in \mathbf{X}$と$t\in [0,1]$に対して$tx+(1-t)\bar{x}\in \mathbf{X}$であるとき、空間$\mathbf{X}$は凸集合であるという。つまり凸集合であることは、ある一つの点が任意の点から「見える」ことと同値となる。}になるとき、$\mathbf{M}$は垂直凸集合(vartical star shape)であるという。$\mathbf{M}$が垂直凸集合であり、かつ$\Omega=\{ x;(x,0)\in \mathbf{M} \}$が凸集合であるとき、$\mathbf{M}$は完全凸集合(totally star shape)であるという。
+
+ ここでドラーム複体に対するポワンカレの補題\footnote{ポワンカレの補題とは、任意次数の微分形式$\omega$に対し外微分を二回取るとゼロになる、つまり$d(d\omega )=0$が成立することをいう。またこれは、ｒ次微分形式$\omega$について$d\omega =0$が成立するとき、$d\zeta =\omega$を満たすｒー１次形式$\zeta$が存在するとも言い換えられる。}と似たつぎの結果を得ることができる。
+
+\begin{lemma}
+ $\mathbf{M}$が完全凸集合であるとき、$\mathbf{M}$上で定義された形式について、$\mathcal{D}$-複体
+\begin{align*}
+\xymatrix{
+0 \ar[r] &{\mathbf{R}} \ar[r] &{\mathbf{\Lambda}_0} \ar[r]^{\mathcal{D}} &{\mathbf{\Lambda}_1} \ar[r]^{\mathcal{D}} &{\cdots \mathbf{\Lambda}_{p-1}} \ar[r]^{\mathcal{D}} &{\mathbf{\Lambda}_p}
+}
+\end{align*}
+は完全(exact)である。つまり、$\forall \omega\in \mathbf{\Lambda}_r\; (0\leq r\leq p)$に対して$\mathcal{D}\omega=0$が成立するとき、その限りにおいて$\omega=\mathcal{D}\zeta$なる$\zeta\in \mathbf{\Lambda}_{r-1}$が存在する。また、$\forall \omega\in \mathbf{\Lambda}_0(=\mathcal{A})$において$\mathcal{D}\omega=0$であるならば、$\omega$は定数関数である。
+\end{lemma}
+
+\begin{remark*}
+ $\mathcal{D}$-複体は、$u$をある切断に制限すると、ドラーム複体に一致する。しかしその完全性は自明ではない。これは、
+\begin{equation*}
+\omega = \mathcal{D}H(\omega) + H(\mathcal{D}\omega)
+\end{equation*}
+なる完全ホモトピー作用素$H$を構成することが可能であることから証明される（Olver\cite[Chap.5]{Olver4}）。
+\end{remark*}
+
+ つぎに、
+\begin{equation}
+\hat{\omega} = \sum _{\alpha,J} P^\alpha_J[u]du^{\alpha_1}_{J_1}\wedge \cdots \wedge du^{\alpha_r}_{J_r} \qquad (\forall P^\alpha_J\in \mathcal{A}) %---(2.5.2)
+\end{equation}
+（ただし、$J=(J_1,\cdots,J_r)$）なる形の形式をｒ次垂直形式ということにする。このとき、発展形式で表されたベクトル場の全空間を$\mathbf{T}$とすると、この形式$\hat{\omega}$は$(pr^{(n)}\mathbf{T})^r$上で定義される。
+
+ またこの形式に対する作用$\hat{d}$を
+\begin{equation*}
+\hat{d} \hat{\omega} = \sum \frac{\partial P^\alpha_J}{\partial u^\beta_I} du^\beta_I \wedge du^{\alpha_1}_{J_1}\wedge \cdots \wedge du^{\alpha_r}_{J_r}
+\end{equation*}
+と定義する。このとき$\hat{d}^2\hat{\omega}=0$が成立する。ｒ次垂直形式の全空間は$\mathbf{\Lambda}^r$と表す。
+
+\begin{lemma}
+ $\mathbf{M}$が垂直凸集合であるとき、$\mathbf{M}$上で定義された形式について、
+\begin{align*}
+\xymatrix{
+\mathbf{\Lambda}^0 \ar[r]^{\hat{d}} &\mathbf{\Lambda}^1 \ar[r]^{\hat{d}} &\mathbf{\Lambda}^2 \ar[r]^{\hat{d}} &{\cdots}
+}
+\end{align*}
+は完全である（証明はポワンカレの補題と同様、ホモトピー作用素の構成による。）。
+\end{lemma}
+
+ ここでｒ次垂直形式に対する全微分作用素$\mathcal{D}_j$を定義する。この作用素は$\mathbf{X}\times \mathbf{U}^{(n)}$上のベクトル場とみることができるので、$\hat{\omega}$に対するリー微分の形で定義する。このとき、$Q_k\in \mathcal{A}\; (1\leq k\leq r)$に対し、
+\begin{align*}
+\mathcal{D}_j \langle \hat{\omega}; pr^{(n)}v_{Q_1}, \cdots, &pr^{(n)}v_{Q_r} \rangle = \langle \mathcal{D}_j\hat{\omega}; pr^{(n)}v_{Q_1}, \cdots, pr^{(n)}v_{Q_r} \rangle \\
+&+ \sum_{k=1}^r \langle \hat{\omega}; pr^{(n)}v_{Q_1}, \cdots, [\mathcal{D}_j, pr^{(n)}v_{Q_k}], \cdots, pr^{(n)}v_{Q_r} \rangle
+\end{align*}
+となる。ところが一般に$\mathcal{D}_j$と$pr^{(n)}v_{Q_k}$は可換であり、$[\mathcal{D}_j, pr^{(n)}v_{Q_k}]=0$となるため、上式は第１項だけが残る。
+
+\begin{remark*}
+ リー微分は、幾何学的には、ベクトル場$v$の「流れ」としての１パラメータ変換群$g_\epsilon =exp(\epsilon v)$に沿った関数、ベクトル場ないし微分形式の微小変化と考えることができる。
+
+ $\rho|_p\in\mathbf{TM}|_p$を$p\in\mathbf{M}$における接ベクトルとしたとき、そのリー微分は、$\rho|_p$から$\rho|_{g_\epsilon p}$へのパラメータ$\epsilon$に沿った微小変化となる。しかし$\rho|_p$と$\rho|_{g_\epsilon p}$は、それぞれ異なる接空間$\mathbf{TM}|_p$および$\mathbf{TM}|_{g_\epsilon p}$の要素であり、厳密には比較することができない。このため、異なる空間の間の自然な移行として逆変換の微分$(g_{-\epsilon})_*:\mathbf{TM}|_{g_\epsilon p}\longrightarrow\mathbf{TM}|_p$を用い、リー微分は、
+\begin{align*}
+\mathfrak{L}_v(\rho|_p) &= \lim_{\epsilon\to 0} \frac{[(g_{-\epsilon})_* \rho]|_p - \rho|_p}{\epsilon}\\
+&= \lim_{\epsilon\to 0} \frac{(g_{-\epsilon})_*[\rho|_{g_\epsilon p}] - \rho|_p}{\epsilon}\\
+&= \lim_{\epsilon\to 0} \lim_{t\to 0} \frac{g_{-\epsilon} exp(t\rho) g_\epsilon p - exp(t\rho) p}{\epsilon\cdot t}\\
+&= \lim_{\epsilon\to 0} \lim_{t\to 0} \frac{g_{-\epsilon} exp(t\rho) \bar{p} - exp(t\rho) g_{-\epsilon} \bar{p}}{\epsilon\cdot t}\\
+&= v(\rho |_{\bar{p}})-\rho (v|_{\bar{p}})\\
+&= [v,\rho ]|_{\bar{p}}
+\end{align*}
+のように定義される\footnote{最後の式はリー括弧積であり、ベクトル場の全体を$\mathfrak{g}(\ni v)$とすると、$(\mathfrak{g}, [\cdot,\cdot])$はリー代数の構造を持つ。}。また、微分形式に対するリー微分は、引き戻し$(g_{-\epsilon})_*:\wedge^r\mathbf{T}^*\mathbf{M}|_{g_\epsilon p}\longrightarrow \wedge^r\mathbf{T}^*\mathbf{M}|_p$を用い、さらにｒ次微分形式$\omega$はｒ次のベクトル場上の関数$\langle \omega|_p ;\cdot \rangle :\mathbf{TM}|_p\times\dots\times\mathbf{TM}|_p\longrightarrow\mathbf{R}$と考えることができるため、
+\begin{align*}
+\mathfrak{L}_v \langle \omega ; w_1,\dots ,w_r \rangle = \langle \mathfrak{L}_v(\omega);w_1,\dots ,w_r \rangle + \sum_{i=1}^r \langle \omega;w_1,\dots ,[v,w_i],\dots ,w_r \rangle
+\end{align*}
+のように自然に定義することができる。
+\end{remark*}
+
+ (2.5.2)で定義したｒ次垂直形式を使って、
+\begin{equation*}
+\omega \in \mathbf{\Lambda}^{r*} \sim \mathbf{\Lambda}^{r} / \mathfrak{Div}(\mathbf{\Lambda}^{r})^p
+\end{equation*}
+とおくとき、この$\omega$をｒ次汎関数形式(functional r-form)といい、
+\begin{align}
+\omega &= \int_\Omega \hat{\omega}dx \nonumber\\
+&= \int_\Omega \sum_{\alpha,J} \{ P^\alpha_J[u]du^{\alpha_1}_{J_1} \wedge \cdots \wedge du^{\alpha_r}_{J_r} \} dx^1 \wedge \cdots \wedge dx^p %---(2.5.3)
+\end{align}
+\begin{equation*}
+\langle \omega ;v_{Q_1}, \cdots, v_{Q_r}\rangle = \int_\Omega \langle \hat{\omega}; pr^{(n)}v_{Q_1} \cdots, pr^{(n)}v_{Q_r}\rangle dx \nonumber
+\end{equation*}
+と表記する\footnote{$\mathbf{\Lambda}^{r*}$は、$\mathbf{\Lambda}^{r}$に対し$\omega\sim\hat{\omega}+\mathfrak{Div}\hat{\eta} \, (\hat{\omega},\hat{\eta}\in\mathbf{\Lambda}^{r})$とする同値性を導入し、そこから導かれた剰余類である。$\Omega$の境界条件より、$\int_\Omega \mathfrak{Div}\hat{\eta}dx=0$となることから、$\int_\Omega\hat{\omega}dx$は一意にきまる。}。なお、一般の変分問題は零次汎関数形式とみることができる。
+
+\begin{lemma}
+ $\omega, \omega_1\in \mathbf{\Lambda}^{r*}$について、$\omega=\omega_1$であることの必要十分条件は、
+\begin{equation*}
+\langle \omega ;v_{Q_1}, \cdots, v_{Q_r}\rangle = \langle \omega_1 ;v_{Q_1}, \cdots, v_{Q_r}\rangle 
+\end{equation*}
+（$\forall Q_1,\cdots,Q_r\in \mathcal{A}$）となることである（Olver\cite[Chap.5]{Olver4}）。
+\end{lemma}
+
+ 二次汎関数形式は一般に、
+\begin{equation*}
+\omega = \int_\Omega \{ \sum _{\alpha,\beta,J,K} P^{\alpha\beta}_{JK}[u]du^\alpha_J \wedge du^\beta_K \} dx
+\end{equation*}
+と表せる。ここで$du_J=\mathcal{D}_J(du)$であるから、2.3節の計算と同様に部分積分とガウスの発散定理を用いて、
+\begin{equation*}
+\omega = \int_{\Omega} \{ \sum _{\alpha,\beta,I} P^{\alpha\beta}_I[u]du^\alpha \wedge du^\beta_I \} dx
+\end{equation*}
+という形に一般化される。また$\bar{\mathfrak{D}}_{\alpha\beta}=\sum_I P^{\alpha\beta}_I[u]\mathcal{D}_I$とおくと、
+\begin{equation*}
+\omega = \int_{\Omega} \{ \sum_{\alpha,\beta}du^\alpha \wedge \bar{\mathfrak{D}}_{\alpha\beta} (du^\beta) \} dx = \int_{\Omega} \{ du \wedge \bar{\mathfrak{D}} (du) \} dx
+\end{equation*}
+ここで、上述の操作とは逆に、
+\begin{equation*}
+\omega = \int_{\Omega} \{ \sum_{\alpha ,\beta}\mathfrak{D}^*(du^\alpha )\wedge du^\beta \} dx = -\int_{\Omega} \{ \sum_{\alpha ,\beta}du^\beta\wedge\mathfrak{D}^*(du^\alpha ) \} dx
+\end{equation*}
+となる微分作用素$\mathfrak{D}^*$をとり、$\bar{\mathfrak{D}}=\mathfrak{D}-\mathfrak{D}^*$とおくと、この形式は一意的に
+\begin{equation}
+\omega = \frac{1}{2} \int_\Omega \{ du \wedge \mathfrak{D}(du) \} dx %---(2.5.4)
+\end{equation}
+と表され、$\mathfrak{D}$は交代随伴作用素(skew adjoint operator)、つまり$\mathfrak{D}=-\mathfrak{D}^*$となる。また(2.5.4)で表された任意の二次形式に対して、線形微分作用素$\mathfrak{D}$が交代随伴作用素であるとき、
+\begin{align*}
+\langle \omega ;v_Q,v_R \rangle &= \frac{1}{2} \int_\Omega (Q[u]\cdot\mathfrak{D}R[u]-R[u]\cdot\mathfrak{D}Q[u]) dx\\
+&= \int_\Omega Q[u]\cdot\mathfrak{D}R[u] dx \qquad (\forall Q, R \in \mathcal{A})
+\end{align*}
+となり、補題2.5.3よりこれは一意的である。また、デュボア・レイモンの補題\footnote{デュボア・レイモンの補題は変分問題の基本補題ともよばれる。$\mathbf{R}^{n}\supset \Omega$を開集合とし、$f:\Omega \longrightarrow \mathbf{R}$を局所可積分な関数とする。$\Omega$上で定義されたコンパクトな台を持つ$\forall h:\Omega \longrightarrow \mathbf{R}$に対し、$\int_\Omega f(x)h(x)dx=0$を満たすならば、$f$はほとんどいたるところでゼロとなる。}より、
+\begin{equation*}
+\int_\Omega Q[u]\mathfrak{D}R[u] dx = 0 \qquad (\forall Q, R \in \mathcal{A})
+\end{equation*}
+ならば、$\mathfrak{D}R[u]=0$。よって$\mathfrak{D}\equiv 0$となり、つぎの命題が成立する。
+
+\begin{proposition}
+\begin{align*}
+\omega = \frac{1}{2}\int_\Omega \{ du\wedge \mathfrak{D}(du) \} dx \\
+\bar{\omega} = \frac{1}{2}\int_\Omega \{ du\wedge \bar{\mathfrak{D}}(du) \} dx
+\end{align*}
+において、$\bar{\mathfrak{D}}$が$\mathfrak{D}$の交代随伴作用素であるとき、$\omega=\bar{\omega}$となることの必要十分条件は、$\mathfrak{D}=\bar{\mathfrak{D}}$である。
+\end{proposition}
+
+\begin{remark*}
+ 交代随伴作用素$\mathfrak{D}$により一意に表すことができる二次汎関数形式(2.5.4)は、二次正準形式(canonical 2-form)とよばれる。また、$\mathfrak{D}^{-1}$が$\hat{d}(\mathbf{\Lambda}^{2*})\subset Im\mathfrak{D}$で定義される場合、$(\hat{d}(\mathbf{\Lambda}^{2*}), \mathfrak{D}^{-1})$は$\mathbf{M}$上のシンプレクティック構造をなす（3.1節を参照）。ただしこの場合、$\mathfrak{D}$は線形写像とする。
+\end{remark*}
+
+ つぎに、二次汎関数形式(2.5.3)に対する作用$\delta$を
+\begin{equation*}
+\delta \omega = \int_\Omega (\hat{d} \hat{\omega})dx
+\end{equation*}
+と定義し、これを$\omega$の変分微分(variational derivative)という。明らかに$\delta^2 \omega=0$であり、
+\begin{align*}
+\xymatrix{
+\mathbf{\Lambda}^{0*} \ar[r]^{\delta} &\mathbf{\Lambda}^{1*} \ar[r]^{\delta} &\mathbf{\Lambda}^{2*} \ar[r]^{\delta} &{\cdots}
+}
+\end{align*}
+は完全系列である。ここで$\mathbf{\Lambda}^{0*}$において、
+\begin{align}
+\delta \int_\Omega L[u]dx &= \int_\Omega \{ \hat{d}L \} dx = \int_\Omega \{ \sum _{\alpha,J} \frac{\partial L}{\partial u^\alpha_J} du^\alpha_J \} dx \nonumber\\
+&= \int_\Omega \{ \sum _{\alpha,J} (-\mathcal{D})_J \frac{\partial L}{\partial u^\alpha_J} du \} dx \nonumber\\
+&= \int_\Omega \{ \mathcal{E}(L[u]) du \} dx %---(2.5.5)
+\end{align}
+となり\footnote{2.3節における計算と同様、部分積分及びガウスの発散定理を用いる。}、$\delta$の作用は$\mathcal{E}$の作用に置き換えられる。ここで、$\mathbf{\Lambda}_{p-1}\xrightarrow{}\mathbf{\Lambda}_{p}\xrightarrow{}\mathbf{\Lambda}^{1*}$なる系列を考えると、$\mathbf{\Lambda}_{p-1}\ni \zeta=R[u]dx^I$について、
+\begin{align*}
+\mathcal{D}\zeta &= \sum_{i,I}\mathcal{D}_iR[u] dx_i\wedge dx_I\\
+&= \mathfrak{Div}R[u]dx_1\wedge\cdots\wedge dx_p \sim \mathfrak{Div}R[u]
+\end{align*}
+よって
+\begin{align*}
+\int_\Omega \mathcal{E}(\mathcal{D}\zeta)du = \int_\Omega \{ \mathcal{E}(\mathfrak{Div}R[u])du \} dx = \delta \int_\Omega \mathfrak{Div}R[u] dx = 0
+\end{align*}
+したがって、つぎの定理が成立する。
+
+\begin{theorem}
+ $\mathbf{M}$が完全凸集合であるとき、$\mathbf{M}$上の形式について、
+\begin{align*}
+\xymatrix{
+0 \ar[r] &{\mathbf{R}} \ar[r] &{\mathbf{\Lambda}_0} \ar[r]^{\mathcal{D}} &{\cdots \mathbf{\Lambda}_{p-1}} \ar[r]^{\mathcal{D}} &{\mathbf{\Lambda}_p} \ar[r]^{\mathcal{E}} &{\mathbf{\Lambda}^{1*}} \ar[r]^{\delta} &{\cdots}
+}
+\end{align*}
+は完全系列である。
+\end{theorem}
+
+ $\mathbf{\Lambda}^{1*}$の元については、二次汎関数形式の場合と同様、ある標準的な形を決定することができる。なぜなら、
+\begin{equation}
+\omega = \int_\Omega \{ P[u]du \} dx %---(2.5.6)
+\end{equation}
+とおくと、
+\begin{equation*}
+\langle \omega ;v_Q\rangle = \int_\Omega ( P[u]Q[u] ) dx\qquad (\forall P, Q \in \mathcal{A})
+\end{equation*}
+であり、補題2.5.3とデュボア・レイモンの補題より、この$\omega$は微分関数$P[u]$によって決定されることがわかる。ここで(2.5.6)で表現された一次汎関数形式を一次正準形式という。また、$\mathbf{\Lambda}^{1*}$は$\mathcal{A}$と同一視できる。ここで(2.5.6)に対して、
+\begin{align*}
+\delta \omega &= \int_\Omega \{ \sum _{\alpha,\beta,J} \frac{\partial P}{\partial u^\beta_J} du^\beta_J \wedge du^\alpha \} dx = \int_\Omega \{ \mathcal{D}_P (du) \wedge du \} dx \\
+&= \int_\Omega \{ du \wedge (\mathcal{D}_{P}^* - \mathcal{D}_P ) (du) \} dx
+\end{align*}
+であり、この表記は(2.5.6)に対して一意的である。よって定理2.5.1よりつぎの結果を得る。
+
+\begin{theorem}
+ $P[u]\in \mathcal{A}$が垂直凸集合空間で定義されているとき、$P[u]=\mathcal{E}L[u]\; (\exists L\in \mathcal{A})$となる必要十分条件は、微分作用素$\mathcal{D}_P$が自己随伴作用素、つまり$D_P=D_{P}^*$となることに他ならない。
+\end{theorem}
+
+（補足）
+
+\begin{lemma}
+ $L\in \mathcal{A}, Q\in \mathcal{A}^q$に対し、
+\begin{equation*}
+\mathcal{E}(prv_Q(L)) = prv_Q(\mathcal{E}(L)) + \mathcal{D}_{Q}^* \mathcal{E}(L)
+\end{equation*}
+が成立する。
+\end{lemma}
+
+\begin{proof}
+ 一般に、
+\begin{equation}
+prv_Q(P) = \sum_{\alpha ,J}\mathcal{D}_J Q \frac{\partial P}{\partial u^{\alpha}_J} = \mathcal{D}_P (Q)  %---(2.5.7)
+\end{equation}
+が成立する。ここで、定理(2.5.1)で定義された完全複体に対するポワンカレの補題より、
+\begin{equation}
+\mathcal{E}(L) = 0 \Leftrightarrow L = \mathfrak{Div}P \qquad (\exists P\in \mathcal{A})  %---(2.5.8)
+\end{equation}
+が成立する。よって、ガウスの発散定理より、
+\begin{equation*}
+\mathcal{E}(prv_Q(L)) = \mathcal{E}(Q \cdot \mathcal{E}(L)) = \mathcal{D}_{\mathcal{E}(L)}^*(Q) + \mathcal{D}_{Q}^*(\mathcal{E}(L))
+\end{equation*}
+となり（(2.3.5)を参照）、定理2.5.2及び(2.5.7)より、
+\begin{equation*}
+\mathcal{D}_{\mathcal{E}(L)}^*(Q) = \mathcal{D}_{\mathcal{E}(L)}(Q) = prv_Q(\mathcal{E}(L))
+\end{equation*}
+となる。
+\end{proof}
+
+ これにより、定理2.4.3の証明ができる。
+
+\begin{proof}
+ 命題(2.1.1)、命題(2.4.1)より$v=v_Q$について証明すればよい。$v_Q$が変分問題(2.4.1)の変分対称群であるならば、(2.4.4)が成立するので、
+\begin{equation*}
+\mathcal{E}(prv_Q(L)) = prv_Q(\mathcal{E}(L)) + \mathcal{D}_{Q}^*\mathcal{E}(L) = 0
+\end{equation*}
+となり、微分方程式系$\mathcal{E}(L)=0$の解空間上で$prv_Q(\mathcal{E}(L))=0$である。
+\end{proof}
+
+\section{KdV-Burgers方程式の対称群}
+
+ ｎ次発展方程式系、
+\begin{equation}
+u_t = P(x, u^{(n)})  %---(2.6.1)
+\end{equation}
+に対し幾何学的対称群を求める場合、その発展形式は、
+\begin{equation}
+v_Q = \sum_{\alpha}Q_{\alpha}(x, t, u^{(1)})\frac{\partial}{\partial u^{\alpha}} = \sum_{\alpha}Q_{\alpha}(x, t, u, u_x, u_t)\frac{\partial}{\partial u^{\alpha}}  %---(2.6.2)
+\end{equation}
+となる。(2.6.1)を(2.6.2)に代入すると、(2.6.1)の解上で特性は
+\begin{equation*}
+Q = Q(x, t, u, u_x, u_{xx}, \dots , u_n)
+\end{equation*}
+と表せる。例えば、KdV方程式の場合、$Q$は$u_{xxx}$まで依存するものとし、(2.1.2)より
+\begin{equation}
+\mathcal{D}_tQ + u_xQ + u\mathcal{D}_xQ + \mathcal{D}_{x}^3Q  = 0  %---(2.6.3)
+\end{equation}
+を満たすように$Q$を選べば、(2.6.2)は対称群となる。\\
+
+ ここでは、KdV-Burgers方程式とよばれる発展方程式
+\begin{equation}
+u_t + 2uu_x + a u_{xxx} - b u_{xx} = 0 \qquad (a, b \text{は定数})  %---(2.6.4)
+\end{equation}
+を取り上げる（Naumkin,et.al.\cite{Naumkin}）\footnote{KdV-Burgers方程式は、気泡を含む液体の流れや、弾性チューブ内の流体の流れなどを研究する際の制御方程式として用いられる。これは、粘性散逸項である$b\cdot u_{xx}$を含むKdV方程式であり、$b=0$の場合KdV方程式に一致し、一方、$a=0$の場合はBurgers方程式となる。}。これは３階の微分方程式であり、その特性はKdV方程式と同様$u_{xxx}$まで依存することから、(2.6.3)の解上で
+\begin{equation}
+\mathcal{D}_tQ + 2u_xQ + 2u\mathcal{D}_xQ + a \mathcal{D}_x^3Q - b \mathcal{D}_x^2Q = 0  %---(2.6.5)
+\end{equation}
+が成立するように$Q$を選べばよい。ここで(2.6.5)の項の中で、$u$の$x$による４回以上の微分を含む項の係数は、(2.6.4)の解上でゼロとなる。例えば、$u_6$は(2.6.5)の第１項と第４項からそれぞれ１つづつでてくるが、それらはキャンセルされる。(2.6.5)の項数は膨大であるため、ここではそれらを全て書き下すことはせず、意味のある（キャンセルされない）項の係数のみ取り出すことにすると、
+\begin{align*}
+&[\, u_4u_5 &]\qquad &3a Q_{u_{xxx}u_{xxx}} = 0\\
+&[\, u_5    &]\qquad &3a (Q_{xu_{xxx}}+Q_{uu_{xxx}}u_{x}+Q_{u_{x}u_{xxx}}u_{xx}+Q_{u_{xx}u_{xxx}}u_{xxx}) = 0\\
+&[\, u_4    &]\qquad &3a (Q_{xu_{xx}}+Q_{uu_{xx}}u_{x}+Q_{u_{x}u_{xx}}u_{xx}+Q_{u_{xx}u_{xx}}u_{xxx}) = 0
+\end{align*}
+となる。この３式より特性は、
+\begin{equation*}
+Q[u] = \alpha (t)u_{xxx} + \beta (t)u_{xx} + A(x, u, u_{x})
+\end{equation*}
+と表すことができる。これを(2.6.5)に代入し、$u_{xxx}$の係数を取り出すと、
+\begin{equation*}
+\alpha ^{'}(t) - 6\alpha (t)u_{x} + 3a (A_{xu_{x}}+A_{uu_{x}}u_{x}+A_{u_{x}u_{x}}u_{xx}) = 0
+\end{equation*}
+となる。よって微分関数$A$は、
+\begin{equation*}
+A[u] = (\frac{2}{a}\alpha (t)u-\frac{1}{3a}\alpha ^{'}(t)x+ \gamma (t))u_{x} + B(x, t, u)
+\end{equation*}
+となる。再びこれを(2.6.5)に代入し、$u_{xx}$の係数を取り出すと、
+\begin{equation*}
+\beta ^{'}(t) - 4\beta (t)u_{x} + 2b(\frac{1}{3a}\alpha ^{'}(t) - \frac{2}{a} \alpha (t)u_{x}) + 3a (B_{xu}+B_{uu}u_{x}) = 0
+\end{equation*}
+となり、これより
+\begin{align*}
+\beta (t) &= -\frac{b}{a} \alpha (t)\\
+B[u] &= \frac{b}{9a^2} \alpha ^{'}(t)xu + q(x, t)
+\end{align*}
+となる。同様な作業を繰り返すと$u_{x}$の係数より、
+\begin{equation*}
+(\frac{2}{a} \alpha ^{'}(t)u - \frac{1}{3a} \alpha ^{''}(t)x + \gamma ^{'}(t)) + \frac{2b}{9a^2} \alpha ^{'}(t)xu + 2q(x, t) - \frac{2}{3a} \alpha ^{'}(t)u - \frac{2b}{9a^2} \alpha ^{'}(t) = 0
+\end{equation*}
+となり、これより$\alpha$は定数、また
+\begin{equation*}
+q = -\frac{1}{2} \gamma ^{'}(t)
+\end{equation*}
+となる。これらを(2.6.5)に代入し、最終的に、
+\begin{equation*}
+q_t + 2uq_{x} - b q_{xx} + a q_{xxx} = 0
+\end{equation*}
+が残り、$q$は定数となる。よって特性は、$\forall c_1,\, c_2,\, c_3$を定数として、
+\begin{equation*}
+Q[u] = c_1u_{xxx} - \frac{b}{a} c_2u_{xx} + (\frac{2}{a} c_1u - 2c_2t + c_3)u_{x} + c_2
+\end{equation*}
+となり、
+\begin{align}
+Q_1[u] &= -2uu_{x} - a u_{xxx} + b u_{xx} = u_t \nonumber \\
+Q_2[u] &= u_{x} \nonumber \\
+Q_a[u] &= 2tu_{x} - 1  %---(2.6.6)
+\end{align}
+により一次独立に表せる。実際、これらは(2.1.2)を成立させる。また、これを一般化ベクトル場の形にすれば、つぎの定理が成立する。
+
+\begin{theorem}
+ KdV-Burgers方程式(2.6.4)の幾何学的対称群は、
+\begin{align*}
+v_1 &= \frac{\partial}{\partial t} \qquad &\text{（時間並進）}\\
+v_2 &= \frac{\partial}{\partial x} \qquad &\text{（空間並進）}\\
+v_a &= 2t\frac{\partial}{\partial x} + \frac{\partial}{\partial u} \qquad &\text{（ガリレイブースト）}
+\end{align*}
+という形で一次独立に取れる。
+\end{theorem}
+
+ これと同様にKdV方程式(1.6.3)の幾何学的対称群を考えると、その特性は(2.1.10)のように一次独立に取れることがわかる（Olver\cite[Chap.2]{Olver4}）。
+
+\begin{remark}
+ (2.6.6)において、$\mathcal{R}=-a\mathcal{D}_x^2+b\mathcal{D}_x-2u_x\mathcal{D}_x^{-1}$としたとき、$Q_1=\mathcal{R}Q_2$という関係式を満たすが、(2.6.4)の解上で、
+\begin{equation*}
+\mathcal{D}_{\Delta}\mathcal{R} - (-a\mathcal{D}_x^2+b\mathcal{D}_x)\cdot\mathcal{D}_{\Delta} = 2a(u_{xxx}-u_x\mathcal{D}_x^2)
+\end{equation*}
+となり、$a=0$でない限り、$\mathcal{R}$は再帰的作用素とはならない。また(2.6.4)は、ある変分問題のオイラー・ラグランジュ方程式として表すことはできないので、第３節以降のプロセスをKdV-Burgers方程式に対して適用することはできない。
+\end{remark}
+
+\newpage
+
+\chapter{発展方程式のハミルトン系}
+
+\section{ポワソン括弧積とハミルトン作用素}
+
+ $t, x=(x_1,\dots, x_p)$をそれぞれ時間、空間に係る独立変数、$u=(u_1,\dots,u_q)$を従属変数とする（$u=u(t, x)$）。ここで、$\mathcal{F}=\mathcal{A} / \mathfrak{Div}(\mathcal{A})^p$のことを汎関数(functional)とよび、$\mathcal{P}, \mathcal{Q}\in \mathcal{F}$について、
+\begin{equation*}
+\mathcal{P} = \int_\Omega P[u]dx,\qquad \mathcal{Q} = \int_\Omega Q[u]dx \qquad (\Omega \subset \Phi)
+\end{equation*}
+と表記する。また、微分作用素$\mathfrak{D}:\mathcal{A}\longrightarrow\mathcal{A}$に対して、つぎのような括弧積を定義する。
+\begin{equation}
+\{ \mathcal{P}, \mathcal{Q} \} = \int_\Omega \mathcal{E}(P)\cdot\mathfrak{D}\mathcal{E}(Q)dx \in \mathcal{F}  %---(3.1.1)
+\end{equation}
+
+ ここで、この括弧積が汎関数に対し以下の二つの条件を満たすとき、$\mathfrak{D}$をハミルトン作用素、括弧積$\{\cdot , \cdot \}$をポワソン括弧積という。
+\begin{align*}
+(i  &)\, \{ \mathcal{P}, \mathcal{Q} \} = -\{ \mathcal{Q}, \mathcal{P} \} \qquad &\text{（歪対称性）}\\
+(ii &)\, \{ \{ \mathcal{P}, \mathcal{Q} \}, \mathcal{R} \} + \{ \{ \mathcal{R}, \mathcal{P} \}, \mathcal{Q} \} + \{ \{ \mathcal{Q}, \mathcal{R} \}, \mathcal{P} \} = 0  &\text{（ヤコビ恒等式）}
+\end{align*}
+
+ また、このハミルトン作用素によって
+\begin{equation}
+u_t = \mathfrak{D}\mathcal{E}(H) \qquad (H\in \mathcal{A})  %---(3.1.2)
+\end{equation}
+のように表現できる微分方程式系をハミルトン発展方程式系とよぶことにする。
+
+ ところで条件$(i)$を(3.1.1)に代入すると、
+\begin{equation}
+\int_\Omega \mathcal{E}(P)\cdot (\mathfrak{D}+\mathfrak{D}^*)\mathcal{E}(Q)dx = 0  %---(3.1.3)
+\end{equation}
+となる。ここで、つぎの補題が成立する。
+
+\begin{lemma}
+ 微分作用素$\mathfrak{D}:\mathcal{A}\longrightarrow\mathcal{A}$が$\forall P, Q \in \mathcal{A}$に対して、
+\begin{equation}
+\int_\Omega \mathcal{E}(P)\cdot\mathfrak{D} \mathcal{E}(Q)dx = 0  %---(3.1.4)
+\end{equation}
+を成立させる場合、$\mathfrak{D} \equiv 0$である。
+\end{lemma}
+
+\begin{proof}
+ 2.3節における計算と同様、部分積分およびガウスの発散定理より(3.1.4)は、
+\begin{equation*}
+\sum_{\alpha ,\beta ,J}\int_\Omega \frac{\partial P}{\partial u_J^\alpha} [\mathcal{D}_J\mathfrak{D}_{\alpha\beta}\mathcal{E}_\beta (Q)]dx = 0
+\end{equation*}
+となる。ここで$\frac{\partial P}{\partial u_J^\alpha}$は（座標系を）任意にとることができるから、デュボア・レイモンの補題により
+\begin{equation*}
+\mathcal{D}_J\mathfrak{D}_{\alpha\beta}\mathcal{E}_\beta (Q) = 0
+\end{equation*}
+ゆえに$\mathfrak{D}\mathcal{E}(Q)=0\, (\forall Q\in\mathcal{A})$がいえる。つぎに$\mathfrak{D}_{\alpha\beta}=P_{\alpha\beta}^J[u]\mathcal{D}_J$とおいたとき、この式は
+\begin{equation*}
+\sum_{\alpha, J}\sum_{\beta, I}P_{\alpha\beta}^J[u]\mathcal{D}_J[(-\mathcal{D})_I\frac{\partial Q}{\partial u_I^\beta} ] = 0
+\end{equation*}
+となり、$\frac{\partial Q}{\partial u_I^\beta}$は（座標系を）任意にとることができるから、明らかに$P_{\alpha\beta}^J[u]=0\, (\forall \alpha ,\beta )$。よって、$\mathfrak{D} \equiv 0$がいえる。
+\end{proof}
+
+ この補題と(3.1.3)から、つぎの命題が成立する。
+
+\begin{proposition}
+ (3.1.1)で定義された括弧積が歪対称(skew symmetry)であることの必要十分条件は、$\mathfrak{D}$が交代随伴作用素（$\mathfrak{D}^*=-\mathfrak{D}$）となることである。
+\end{proposition}
+
+ (3.1.1)がポワソン括弧積であるとき、一般に$prv_Q$と$\mathcal{D}_J$は可換であり、
+\begin{equation*}
+\{ \mathcal{P}, \mathcal{Q} \} = \int_\Omega prv_{\mathfrak{D}\mathcal{E}(Q)}(P)dx = prv_{\mathfrak{D}\mathcal{E}(Q)}(\int_\Omega Pdx)
+\end{equation*}
+として一般性を失わないので、この$prv_{\mathfrak{D}\mathcal{E}(Q)}$をこのポワソン括弧積に対するベクトル場（一般にハミルトンベクトル場とよばれる）と考えることができ、
+\begin{equation*}
+\hat{v}_\mathcal{Q} = v_{\mathfrak{D}\mathcal{E}(Q)}
+\end{equation*}
+とおく\footnote{一般の有限次元ハミルトン系のアナロジーとして考える。}。
+
+ また、このベクトル場の作用素$\mathfrak{D}=\sum_{\alpha ,\beta ,J}P_{\alpha\beta}^J[u]\mathcal{D}_J$に対する作用を
+\begin{equation*}
+pr\hat{v}_\mathcal{Q}(\mathfrak{D}) = \sum_{\alpha ,\beta ,J}prv_{\mathfrak{D}\mathcal{E}(Q)}(P_{\alpha\beta}^J[u])\mathcal{D}_J
+\end{equation*}
+と、係数にのみ作用するものとして定義する。ここで
+\begin{equation*}
+prv_Q(\mathfrak{D}P) = prv_Q(\mathfrak{D}) P + \mathfrak{D} [prv_Q(P)]
+\end{equation*}
+が成立する。
+
+ つぎに$(ii)$のヤコビ恒等式(Jacobi identity)を考える。上述の汎関数$\mathcal{P}$に対し、$\delta\mathcal{P}=\mathcal{E}(P)$を便宜的に$P$で表す（$\mathcal{Q}$、$\mathcal{R}$についても同様）。このとき、
+\begin{align*}
+\{ \{ \mathcal{P}, \mathcal{Q} \}, \mathcal{R} \} &= pr\hat{v}_\mathcal{R}(\int_\Omega P\mathfrak{D}Qdx)\\
+&= \int_\Omega \{ prv_{\mathfrak{D}R}(P)\cdot\mathfrak{D}Q + P\cdot prv_{\mathfrak{D}R}(\mathfrak{D}) Q + P\cdot \mathfrak{D}[prv_{\mathfrak{D}R}(Q)] \} dx\\
+&= \int_\Omega \{ \mathcal{D}_P(\mathfrak{D}R)\cdot\mathfrak{D}Q + P\cdot prv_{\mathfrak{D}R}(\mathfrak{D}) Q - \mathfrak{D}P\cdot \mathcal{D}_Q(\mathfrak{D}R) \} dx
+\end{align*}
+となり、$\mathcal{D}_P, \mathcal{D}_Q\, (, \mathcal{D}_R)$は定理2.5.2より自己随伴作用素となる。これらを$(ii)$の左辺に代入すると、
+\begin{align}
+\{ \{ \mathcal{P}, \mathcal{Q} \}, \mathcal{R} \} &+ \{ \{ \mathcal{R}, \mathcal{P} \}, \mathcal{Q} \} + \{ \{ \mathcal{Q}, \mathcal{R} \}, \mathcal{P} \}\nonumber\\
+&= \int_\Omega [P\cdot prv_{\mathfrak{D}R}(\mathfrak{D}) Q + R\cdot prv_{\mathfrak{D}Q}(\mathfrak{D}) P + Q\cdot prv_{\mathfrak{D}P}(\mathfrak{D}) R]dx  %---(3.1.5)
+\end{align}
+となる。よって、交代随伴作用素$\mathfrak{D}$が
+\begin{equation}
+P\cdot prv_{\mathfrak{D}R}(\mathfrak{D}) Q + R\cdot prv_{\mathfrak{D}Q}(\mathfrak{D}) P + Q\cdot prv_{\mathfrak{D}P}(\mathfrak{D}) R = 0  %---(3.1.6)
+\end{equation}
+を成立させるならば、$\mathfrak{D}$はハミルトン作用素である\footnote{ここでは$\delta\mathcal{P}\equiv P,\, \delta\mathcal{Q}\equiv Q,\, \delta\mathcal{R}\equiv R$として考えたが、補題3.1.1は$\forall P,Q\in \mathcal{A}$の場合に一般化されることから（Olver\cite[Chap.7]{Olver4}）、より一般的に$P, \, Q, \, R\in\mathcal{A}$と考えても同じである。}。
+
+ ここで$\mathfrak{D}$がハミルトン作用素となるための基準を考えるため、多重汎関数ベクトル(functional multi-vector)を用いる。まず、その基底となる$\theta_J^\alpha$を
+\begin{equation*}
+\langle \theta_J^\alpha ;P\rangle = \mathcal{D}_JP_\alpha \qquad (P\in\mathcal{A}^q)
+\end{equation*}
+と定義し、$\langle du_J^\alpha ;prv_P\rangle$（$=\mathcal{D}_JP_\alpha$）と対応させ、$\mathbf{\Lambda} ^{1*}$を$\mathcal{A}$と同一視して扱うこととする\footnote{$\theta_J^\alpha$は$\frac{\partial}{\partial u_J^\alpha}$と表してもよく、一般の多重ベクトルは${\wedge}^r\mathbf{TM}$の要素としてみることができる。}。一般のｒ次汎関数ベクトルは
+\begin{equation}
+\Theta = \int_\Omega [\sum_{\alpha ,J}R_J^\alpha [u]\theta_{j_1}^{\alpha _1}\wedge ,\cdots ,\wedge \theta_{j_r}^{\alpha _r}]dx \qquad (R_J^\alpha\in\mathcal{A})  %---(3.1.7)
+\end{equation}
+と表され、ｒ次線形写像
+\begin{equation*}
+\langle \Theta ;P^1,\cdots,P^k \rangle = \int_\Omega [\sum_{\alpha ,J}R_J^\alpha det(\mathcal{D}_{Ji}P_{\alpha i}^j)]dx \qquad (P^j\in\mathcal{A}^q)
+\end{equation*}
+が定義される。また命題2.5.1における二次汎関数形式と同様に、二次汎関数ベクトルは、$\mathfrak{D}$をハミルトン作用素として
+\begin{equation}
+\Theta = \frac{1}{2}\int_\Omega [\theta\wedge\mathfrak{D}(\theta )]dx = \frac{1}{2}\int_\Omega \sum_{\alpha ,\beta =1}^q\theta ^\alpha\wedge\mathfrak{D}_{\alpha\beta}\theta ^\beta dx  %---(3.1.8)
+\end{equation}
+と一意的に表される。これを二次正準ベクトル(canonical 2-vector)とよぶことにする。また、この二次正準ベクトルにより、定義より、
+\begin{align*}
+\langle \Theta ;\mathcal{E}(P),\mathcal{E}(Q)\rangle &= \frac{1}{2}\int_\Omega [\mathcal{E}(P)\cdot\mathfrak{D}\mathcal{E}(Q)-\mathcal{E}(Q)\cdot\mathfrak{D}\mathcal{E}(P)]dx\\
+&= \int_\Omega \mathcal{E}(P)\cdot\mathfrak{D}\mathcal{E}(Q)dx = \{ \mathcal{P}, \mathcal{Q} \}
+\end{align*}
+と表せる。さらに上述の定義から、(3.1.5)の左辺は三次汎関数ベクトル
+\begin{align*}
+\Psi = \frac{1}{2}\int_\Omega \theta\wedge prv_{\mathfrak{D}\theta}(\mathfrak{D})\wedge\theta dx
+\end{align*}
+によって、$\langle\Psi ;P,Q,R\rangle$と表すことができる\footnote{$\langle\Psi ;\cdot\rangle$の定義と$prv_{\mathfrak{D}\theta}(\mathfrak{D})$が交代随伴作用素となることからわかる。}。ただし、
+\begin{equation*}
+prv_{\mathfrak{D}\theta} = \sum_{\alpha ,J}\mathcal{D}_J(\mathfrak{D}_{\alpha\beta}\theta^\beta )\frac{\partial}{\partial u_J^\alpha }
+\end{equation*}
+と定義する。さらに、その表すベクトル場の多重汎関数ベクトルへの作用を、微分作用素に対する作用と同様、係数に対するものとして定義する。このとき$prv_{\mathfrak{D}\theta}(\theta_J^\alpha )=0$であり、
+\begin{equation*}
+prv_{\mathfrak{D}\theta}(\theta\wedge\mathfrak{D}\theta ) = -\theta\wedge prv_{\mathfrak{D}\theta}(\mathfrak{D})\wedge\theta
+\end{equation*}
+となる\footnote{負の符号は、外積代数の計算規則による。}。よって(3.1.8)に対して
+\begin{equation*}
+prv_{\mathfrak{D}\theta}(\Theta ) = \frac{1}{2}\int_\Omega prv_{\mathfrak{D}\theta}(\theta\wedge\mathfrak{D}(\theta ))dx = -\Psi
+\end{equation*}
+となり、したがってつぎの定理が成立する。
+
+\begin{theorem}
+ 交代随伴（微分）作用素$\mathfrak{D}$に対して、二次汎関数ベクトル(3.1.8)は一意に決定される。また、$\mathfrak{D}$がハミルトン作用素となる必要十分条件は、
+\begin{equation}
+prv_{\mathfrak{D}\theta}(\Theta ) = 0  %---(3.1.9)
+\end{equation}
+が成立することである。
+\end{theorem}
+
+\begin{remark*}
+ $\mathfrak{D}$がハミルトン作用素となることの基準を多重汎関数ベクトルを使い(3.1.9)のように示すことができたが、これを使わずに、2.5節で定義した汎関数形式から似たような基準を求めることもできる。そのためには、$\mathfrak{D}$に対し、$\mathfrak{D}^{-1}\cdot\mathfrak{D}=\mathfrak{D}\cdot\mathfrak{D}^{-1}=1$、つまりこれらが恒等変換になるように$\mathfrak{D}^{-1}$を定義し、$\mathfrak{D}^{-1}$に対する二次正準形式
+\begin{equation*}
+\omega = \frac{1}{2}\int_\Omega [du\wedge \mathfrak{D}^{-1}(du)]dx
+\end{equation*}
+において、もし$\mathfrak{D}$がハミルトン作用素であるならば、$\delta\omega =0$であることを示せばよい。
+
+ 一般に微分作用素$\mathfrak{D}:\mathcal{A}^q\longrightarrow\mathcal{A}^r$において、ある作用素$\bar{\mathfrak{D}}:\mathcal{A}^r\longrightarrow\mathcal{A}\, (\bar{\mathfrak{D}}\ne 0)$が存在し、$\bar{\mathfrak{D}}\cdot\mathfrak{D}\equiv 0$が成立するとき、$\mathfrak{D}$は退化作用素であるという。また、そのような作用素が存在しないとき、$\mathfrak{D}$は非退化作用素であるという。
+
+ この基準を用いるときは、$\mathfrak{D}$は非退化作用素である必要がある。またここで$\mathfrak{D}^{-1}$は、形式的に、$Im\mathfrak{D}$において定義されるものと考える（Olver\cite{Olver2}）。
+\end{remark*}
+
+ つぎにポワソン括弧積と保存則との関係について述べる。汎関数
+\begin{equation}
+\mathcal{C} = \int_\Omega C[u]dx  %---(3.1.10)
+\end{equation}
+がハミルトン作用素$\mathfrak{D}$に対して、
+\begin{equation}
+\mathfrak{D}\delta\mathcal{C} = \mathfrak{D}\mathcal{E}(C)\equiv 0
+\end{equation}
+を成立させるとき、$\mathcal{C}$を$\mathfrak{D}$に対する区分汎関数(distinguished functional)という\footnote{区分汎関数はカシミール汎関数(Casimir functional)ともよばれる。}。このとき任意の汎関数
+\begin{equation*}
+\mathcal{H} = \int_\Omega H[u]dx
+\end{equation*}
+に対して、
+\begin{equation*}
+\{ \mathcal{C}, \mathcal{H} \} = pr\hat{v}_\mathcal{H}(\mathcal{C}) = 0 \qquad (\forall u,x) %---(3.1.11)
+\end{equation*}
+が成立する。よって、つぎの命題が成立する。
+\begin{proposition}
+ $\mathcal{C}$がハミルトン作用素$\mathfrak{D}$に対する区分汎関数であるとき、$\mathcal{C}$はハミルトン発展方程式系
+\begin{equation*}
+u_t = \mathfrak{D}\delta\mathcal{H} = \mathfrak{D}\mathcal{E}(C)
+\end{equation*}
+の保存則を定める。
+\end{proposition}
+
+ 2.3節で述べたように、発展方程式系の保存則は、一般に(2.3.2)のように表せるので、これを$\mathfrak{D}$に対するハミルトン発展方程式系$u_t = \mathfrak{D}\mathcal{E}(H)$に対する保存則であるとすると、ある仮定のもとでの保存量(2.3.3)が存在する。この保存量に対し、発展方程式の解空間上で、
+\begin{equation}
+\mathcal{D}_t\mathcal{T}_\Omega[t;u] = \frac{\partial \mathcal{T}_\Omega}{\partial t} + prv_{\mathfrak{D}\mathcal{E}(H)}(\mathcal{T}_\Omega ) = 0  %---(3.1.12)
+\end{equation}
+が成立する。逆に(3.1.12)が成立すれば、流束$X$を適当に選んで保存則をつくることができる。よって、区分汎関数が存在すれば、保存則がつくれることになる。
+
+ また、ハミルトンベクトル場に対し、ヤコビ恒等式より下式が成立する。
+\begin{equation}
+\hat{v}_{\{ \mathcal{P}, \mathcal{Q} \} } = -[\hat{v}_\mathcal{P}, \hat{v}_\mathcal{Q}]  %---(3.1.13)
+\end{equation}
+
+ （補足）\\
+ 
+ 3.1節では変分問題のポワソン括弧積と、それに対応するハミルトン作用素、およびハミルトン発展方程式系を定義したが、一般の有限次元ハミルトン系は$\mathbf{M}$上の微分関数$P[u],Q[u]\in\mathcal{A}$について定義される。$\forall P,Q\in\mathcal{A}$に対し、ポワソン括弧積$\{ P, Q \}$は歪対称性及びヤコビ恒等式を満たす。
+
+ 古典力学的な運動は、対応するハミルトン関数$H[u]\in\mathcal{A}$によって、
+\begin{equation}
+u_t = \{ u, H \}  %---(3.1.14)
+\end{equation}
+と表され、これをハミルトン系とよぶ。また、
+\begin{equation*}
+v_H = \{ \cdot , H \}:\mathcal{A}\longrightarrow\mathcal{A}
+\end{equation*}
+はハミルトンベクトル場とよばれ、ライプニッツ・ルールを満たす。座標系を$x=(x_1,\dots,x_n)$とすると、(3.1.14)から、
+\begin{equation*}
+\frac{d x_i}{d t} = \{ x_i, H \}
+\end{equation*}
+となり、よって（3.1.14)は、
+\begin{equation}
+u_t = \sum_{i=1}^n \frac{\partial u}{\partial x_i}\frac{d x_i}{d t} = \sum_{i=1}^n \frac{\partial u}{\partial x_i}\{ x_i, H \}  %---(3.1.15)
+\end{equation}
+と表せる。
+
+ さらに、
+\begin{equation*}
+\{P, Q\}|_x \equiv \{dP|_x, dQ|_x \} = v_Q|_x(P) = \langle dP|_x; v_Q|_x \rangle = -\langle dQ|_x; v_P|_x \rangle
+\end{equation*}
+と定義すると、ポワソン括弧積は$\mathbf{T}^*\mathbf{M}|_x\times\mathbf{T}^*\mathbf{M}|_x\longrightarrow\mathcal{A}|_x$とみなせる。ここで$\mathbf{T}^*\mathbf{M}|_x$の基底を$dx_1|_x,\dots,dx_n|_x$とし、
+\begin{equation*}
+A = (a_{ij}|_x) = (\{x_i, x_j\}|_x) = (\{dx_i|_x, dx_j|_x \}) \qquad (1\le i, j\le n)
+\end{equation*} 
+とすると、行列$A$は交代行列となり、最大階数（非退化）である場合、その階数は偶数となる。$(\Omega_{ij}) = A^{-1}$として二次微分形式を
+\begin{equation}
+\Omega = \sum_{i,j}\Omega_{ij}dx_i\wedge dx_j  %---(3.1.16)
+\end{equation} 
+とすると、$\Omega$は多様体$\mathbf{M}$のシンプレクティック構造となる（証明は$d\Omega=0$を示すことにより行う）。
+
+ ここで、以下に示すダルブーの定理(Darboux's Theorem)が成立する。
+
+\begin{theorem}
+ 多様体$\mathbf{M}$がシンプレクティック構造を持つとき、$\mathbf{M}$の任意の点の近傍で、座標系$x=(q_1,\dots,q_m,p_1,\dots,p_m)$で、
+\begin{equation}
+\{ q_i, p_j \} = \delta_{ij}, \qquad \{ q_i, q_j \} = 0 = \{ p_i, p_j \} \qquad (2m=n)  %---(3.1.16)
+\end{equation}
+となるようなものが取れる（Olver\cite[Chap.6]{Olver4}）。
+\end{theorem}
+
+ 上のような座標系を局所ダルブー系という。また、$q_i, \, p_i$をそれぞれ$p_i, \, q_i$の正凖共役量という（大森\cite[Chap.3]{Omori}）。
+
+\section{一階のハミルトン作用素とダルブーの定理}
+
+ 一般の有限次元ハミルトン系がシンプレクティック構造を持つ場合、局所ダルブー系を定めることができるが、これと類似的に、(3.1.2)のように表現されたハミルトン発展方程式系について、ある座標系のもとで一意的なハミルトン作用素を表現する問題が考えられる。しかしこの問題は一般には成功していない。ただし、一階のハミルトン系では可能である（Olver\cite[Chap.6]{Olver5}）。
+
+ 一階の微分作用素は、
+\begin{equation}
+\mathfrak{D} = A[u]\mathcal{D}_x + B[u] \qquad (A, B\in\mathcal{A})  %---(3.2.1)
+\end{equation}
+のように表される。ここで$\mathfrak{D}$がハミルトン作用素、つまり(3.1.9)を満たすならば、$A,B$はある程度きまった形になる。
+
+\begin{theorem}
+ 一次微分作用素(3.2.1)において、$A[u]$の符号は任意の$(x,u)$で一定であったとする。このとき、$\mathfrak{D}$がハミルトン作用素であるならば、$\mathfrak{D}$はある微分関数$T[u]=T(x,u,u_x)$によって
+\begin{equation}
+\mathfrak{D} = \mathcal{E}(T)^{-1}\mathcal{D}_x\mathcal{E}(T)^{-1}  %---(3.2.2)
+\end{equation}
+と表すことができる。
+\end{theorem}
+
+ 一般に、(3.2.1)において$A[u]$の符号が一定であり、さらに$\mathfrak{D}$が交代随伴作用素である場合、$\mathfrak{D}$は、
+\begin{equation*}
+\mathfrak{D} = S[u]\mathcal{D}_xS[u] \qquad (\exists S\in\mathcal{A})
+\end{equation*}
+と表すことができる。さらにこの微分作用素が(3.1.9)を満たすことから、$S[u]$はある微分関数$F[u]=F(x,u,u_x), \, G[u]=G(x,u,u_x)$によって
+\begin{equation}
+S^{-1}[u] = F[u]u_{xx} + G[u]  %---(3.2.3)
+\end{equation}
+と表され、さらにこの$F[u], \, G[u]$は
+\begin{equation}
+G[u]u_x = F_x[u] + F_u[u]u_x  %---(3.2.4)
+\end{equation}
+を成立させることが証明できる。また(3.2.4)より、この$F[u], \, G[u]$はある微分関数$T[u]=T(x,u,u_x)$によって
+\begin{align*}
+F[u] &= -\frac{\partial ^2T}{\partial u_x^2}\\
+G[u] &= -\frac{\partial ^2T}{\partial x\partial u_x}-u_x\frac{\partial ^2T}{\partial u\partial u_x}+\frac{\partial T}{\partial u}
+\end{align*}
+と表され、これを(3.2.3)に代入すると、$S^{-1}[u]=\mathcal{E}(T)$となることが求められる。
+
+ つぎにジェット空間$\mathbf{M}^{(n)}\subset\mathbf{X}\times\mathbf{U}^{(n)}$における局所座標変換を
+\begin{equation}
+y = P[u] \qquad w = Q[u] \qquad (P, \, Q\in\mathcal{A})  %---(3.2.5)
+\end{equation}
+として、$y$を新しい独立変数、$w$を$y$に従属する変数と考える。このとき、全微分作用素について
+\begin{equation*}
+\mathcal{D}_x = (\mathcal{D}_xP)\mathcal{D}_y
+\end{equation*}
+が成立する。
+
+\begin{lemma}
+ 座標変換(3.2.5)に対して、
+\begin{equation*}
+\mathbf{D} = (\mathcal{D}_xP)\mathcal{D}_{Q}^*+(\mathcal{D}_xQ)\mathcal{D}_{P}^*
+\end{equation*}
+とおくと、
+\begin{equation*}
+w_t = (\mathcal{D}_xP)^{-1}\mathbf{D}(u_t), \qquad \mathcal{E}_u = \mathbf{D}^*\mathcal{E}_w
+\end{equation*}
+が成立する。ただし、
+\begin{equation*}
+\mathcal{E}_u = \sum_k(-\mathcal{D}_x)^k\frac{\partial}{\partial u_k}, \qquad \mathcal{E}_w = \sum_k(-\mathcal{D}_y)^k\frac{\partial}{\partial w_k}
+\end{equation*}
+とする。
+\end{lemma}
+
+ この補題により、微分方程式系$u_t=\mathfrak{D}\mathcal{E}(H)$は、
+\begin{equation}
+w_t = (\mathcal{D}_xP)^{-1}\mathbf{D}\mathfrak{D}\mathbf{D}^*\mathcal{E}_w(H) = \bar{\mathfrak{D}}\mathcal{E}_w(H)  %---(3.2.6)
+\end{equation}
+という形に変換される。
+
+ ここで、ダルブーの定理より、つぎの定理が成立する。
+
+\begin{theorem}
+ $\mathfrak{D}$を一階のハミルトン作用素とし、これが定理3.1.2の条件を満たすとき、適当な座標変換をとることにより、$\mathfrak{D}$は$\bar{\mathfrak{D}}=\mathcal{D}_y$という形に変換される。
+\end{theorem}
+
+\begin{proof}
+ 局所座標変換を
+\begin{equation*}
+y = P(x,u,u_x), \qquad w = Q(x,u,u_x)
+\end{equation*}
+ として、上述と同様に作用素$\mathbf{D}$を構成すると、これは高々一階であり、これを$\mathbf{D}=M[u]\mathcal{D}_x+N[u]$とおくと、
+\begin{align}
+M[u] = (P_xQ_{u_x}-Q_xP_{u_x})+u_x(P_uQ_{u_x}-Q_uP_{u_x})\nonumber\\
+N[u] = (P_xQ_u-Q_xP_u)+u_{xx}(P_{u_x}Q_u-Q_{u_x}P_u)  %---(3.2.7)
+\end{align}
+となる。ここで$\mathfrak{D}$が一階の微分作用素となるためには、$\mathbf{D}$はゼロ階（つまり$M[u]=0$）でなければならない。またこのとき、(3.2.2)に対して(3.2.6)より、
+\begin{equation*}
+\bar{\mathfrak{D}} = N\cdot \mathcal{E}(T)^{-1}\mathcal{D}_y\mathcal{E}(T)^{-1}\cdot N
+\end{equation*}
+よってこの定理が成立するには、(3.2.3)より、
+\begin{equation}
+M=0 \qquad \text{および} \qquad N=\mathcal{E}(T)=Fu_{xx}+G  %---(3.2.8)
+\end{equation}
+を満たせばよい。またこれと(3.2.7)より、
+\begin{align}
+P_xQ_u-Q_uP_x &= G\nonumber\\
+P_{u_x}Q_u-Q_{u_x}P_u &= F\nonumber\\
+P_xQ_{u_x}-Q_xP_{u_x} &= u_xF
+\end{align}
+となるように$P, /, Q$が選べることを示せばよい。ここで、
+\begin{equation*}
+\omega = dP\wedge dQ = Gdx\wedge du + u_xFdx\wedge du_x + Fdu_x\wedge du
+\end{equation*}
+としたとき、この二次形式が閉じている（つまり$d\omega =0$である）ことは、(3.2.4)が成立すること、つまり$\mathfrak{D}$がハミルトン作用素であることと同値である。
+
+ 一般に、$\mathbf{R}^3$におけるダルブーの定理から、$d\omega =0$（$\omega\ne 0$）であるとき、ある局所変換$\xi =P(x,u,u_x), \, \eta =Q(x,u,u_x), \, \zeta =R(x,u,u_x)$が存在し、$\omega = d\xi\wedge d\eta=dP\wedge dQ$となるようにすることができる。よって定理は成立する
+\end{proof}
+
+\section{双ハミルトン系}
+
+ $\mathfrak{D},\mathfrak{E}$をハミルトン作用素とする。ここで$a\cdot\mathfrak{D}+b\cdot\mathfrak{E} \, (\forall a,b\in\mathbf{R})$が再びハミルトン作用素となるとき、$(\mathfrak{D},\mathfrak{E})$をハミルトン対(Hamilton pair)とよぶ。
+
+\begin{lemma}
+ ハミルトン作用素$\mathfrak{D},\mathfrak{E}$に対して、$\mathfrak{D}+\mathfrak{E}$がハミルトン作用素となれば、$(\mathfrak{D},\mathfrak{E})$はハミルトン対であるといえる。
+\end{lemma}
+
+\begin{proof}
+\begin{align}
+\mathcal{I}(\mathfrak{D},\mathfrak{E};P,Q,R) &= \frac{1}{2}\int_\Omega [P\cdot prv_{\mathfrak{D}R}(\mathfrak{E})\cdot Q + R\cdot prv_{\mathfrak{D}Q}(\mathfrak{E})\cdot P + Q\cdot prv_{\mathfrak{D}P}(\mathfrak{E})\cdot R  \nonumber\\
+&+ P\cdot prv_{\mathfrak{E}R}(\mathfrak{D})\cdot Q + R\cdot prv_{\mathfrak{E}Q}(\mathfrak{D})\cdot P + Q\cdot prv_{\mathfrak{E}P}(\mathfrak{D})\cdot R]dx  %---(3.3.1)
+\end{align}
+とおくと、$\mathcal{I}(\mathfrak{D},\mathfrak{D};P,Q,R)$は(3.1.5)の右辺に等しくゼロとなる（$\mathfrak{E},\mathfrak{D}+\mathfrak{E}$についても同様）。ここで、
+\begin{equation*}
+\mathcal{I}(\mathfrak{D}+\mathfrak{E},\mathfrak{D}+\mathfrak{E};P,Q,R) = \mathcal{I}(\mathfrak{D},\mathfrak{D};P,Q,R) + 2\cdot\mathcal{I}(\mathfrak{D},\mathfrak{E};P,Q,R) +\mathcal{I}(\mathfrak{E},\mathfrak{E};P,Q,R)
+\end{equation*}
+となることから(3.3.1)はゼロとなり、明らかに$(\mathfrak{D},\mathfrak{E})$はハミルトン対となる。
+\end{proof}
+
+ このようなハミルトン対により、
+\begin{equation}
+u_t = \mathfrak{D}\mathcal{E}(H_1) = \mathfrak{E}\mathcal{E}(H_0) \qquad (H_0,H_1\in\mathcal{A})  %---(3.3.2)
+\end{equation}
+と表せるハミルトン発展方程式系を双ハミルトン系(biHamiltonian system)という。
+
+\begin{lemma}
+ ハミルトン対$(\mathfrak{D},\mathfrak{E})$において、$\mathfrak{D}$は非退化作用素であるとする。また、$\mathfrak{E}P=\mathfrak{D}Q, \, \mathfrak{E}Q=\mathfrak{D}R \, (\exists P,Q,R\in\mathcal{A})$が成立し、さらに、この$P,Q$はある汎関数の変分微分として、$\delta\mathcal{P}=P, \, \delta\mathcal{Q}=Q$のように表されるものとする。このとき、ある変分問題$\mathcal{R}$が存在し、$\delta\mathcal{R}=R$と表すことができる。
+\end{lemma}
+
+\begin{proof}
+\begin{align}
+\mathcal{K}(\mathfrak{D},\mathfrak{E};P,Q,R) &= \frac{1}{2}[ prv_{\mathfrak{D}R}\int_\Omega P\mathfrak{E}Qdx + prv_{\mathfrak{D}Q}\int_\Omega R\mathfrak{E}Pdx + prv_{\mathfrak{D}P}\int_\Omega Q\mathfrak{E}Rdx\nonumber\\
+&+ prv_{\mathfrak{E}R}\int_\Omega P\mathfrak{D}Qdx + prv_{\mathfrak{E}Q}\int_\Omega R\mathfrak{D}Pdx + prv_{\mathfrak{E}P}\int_\Omega Q\mathfrak{D}Rdx ]  %---(3.3.3)
+\end{align}
+とおくと、もし$\delta\mathcal{P}=P, \, \delta\mathcal{Q}=Q, \, \delta\mathcal{R}=R$となる汎関数$\mathcal{P},\mathcal{Q},\mathcal{R}$が存在する場合、3.1節で述べたように、
+\begin{equation}
+\mathcal{K}(\mathfrak{D},\mathfrak{E};P,Q,R) = \mathcal{I}(\mathfrak{D},\mathfrak{E};P,Q,R)
+\end{equation}
+となり、これらはヤコビ恒等式によりゼロとなるはずであるから、$\mathcal{J}=\mathcal{K}-\mathcal{I}$とおいたとき、$\mathcal{J}(\mathfrak{D},\mathfrak{E};P,Q,R)$が恒等的にゼロとなることを求めればよい。\\
+ ここで、
+\begin{align*}
+prv_{\mathfrak{D}R}\int_\Omega P\cdot\mathfrak{E}Qdx &- \int_\Omega P\cdot prv_{\mathfrak{D}R}(\mathfrak{E})\cdot Qdx\\
+&= \int_\Omega [\mathcal{D}_P(\mathfrak{D}R)\cdot\mathfrak{E}Q + P\cdot \mathfrak{E}\mathcal{D}_Q(\mathfrak{D}R)]dx\\
+&= \int_\Omega [\mathcal{D}_P(\mathfrak{D}R)\cdot\mathfrak{E}Q -  \mathfrak{E}P\cdot\mathcal{D}_Q(\mathfrak{D}R)]dx\\
+&= \int_\Omega [\mathfrak{D}R\cdot\mathcal{D}_{P}^*(\mathfrak{E}Q) - \mathfrak{E}P\cdot\mathcal{D}_Q(\mathfrak{D}R)]dx
+\end{align*}
+であることに注意すると、
+\begin{align}
+\mathcal{J}(\mathfrak{D},\mathfrak{E}&;P,Q,R)\nonumber\\
+&= \frac{1}{2}\int_\Omega [\mathfrak{E}P(\mathcal{D}_{Q}^*-\mathcal{D}_Q)\mathfrak{D}R + \mathfrak{E}Q(\mathcal{D}_{R}^*-\mathcal{D}_R)\mathfrak{D}P + \mathfrak{E}R(\mathcal{D}_{P}^*-\mathcal{D}_P)\mathfrak{D}Q\nonumber\\
+&+ \mathfrak{D}P(\mathcal{D}_{Q}^*-\mathcal{D}_Q)\mathfrak{E}R + \mathfrak{D}Q(\mathcal{D}_{R}^*-\mathcal{D}_R)\mathfrak{E}P + \mathfrak{D}R(\mathcal{D}_{P}^*-\mathcal{D}_P)\mathfrak{E}Q ]dx  %---(3.3.4)
+\end{align}
+となる。ここで$S=\delta\mathcal{S}, \, T=\delta\mathcal{T}$となるよう任意の汎関数$\mathcal{S},\mathcal{T}$をとり、$P,Q,R\in\mathcal{A}$はこの補題の仮定を満たすとする。このとき、
+\begin{align*}
+0 &= \mathcal{K}(\mathfrak{D},\mathfrak{E};Q,S,T)\\
+&= \frac{1}{2}[prv_{\mathfrak{D}T}\int_\Omega Q\mathfrak{E}Sdx + prv_{\mathfrak{D}Q}\int_\Omega S\mathfrak{E}Tdx + prv_{\mathfrak{D}S}\int_\Omega T\mathfrak{E}Qdx\\
+&+ prv_{\mathfrak{E}T}\int_\Omega Q\mathfrak{D}Sdx + prv_{\mathfrak{E}Q}\int_\Omega S\mathfrak{D}Tdx + prv_{\mathfrak{E}S}\int_\Omega T\mathfrak{D}Qdx]\\
+&= \frac{1}{2}[prv_{\mathfrak{D}T}\int_\Omega R\mathfrak{D}Sdx + prv_{\mathfrak{E}P}\int_\Omega S\mathfrak{E}Tdx + prv_{\mathfrak{D}S}\int_\Omega T\mathfrak{D}Rdx\\
+&+ prv_{\mathfrak{E}T}\int_\Omega P\mathfrak{E}Sdx + prv_{\mathfrak{D}R}\int_\Omega S\mathfrak{D}Tdx + prv_{\mathfrak{E}S}\int_\Omega T\mathfrak{E}Pdx]\\
+&= \frac{1}{2}[\mathcal{K}(\mathfrak{D},\mathfrak{D};R,S,T)+\mathcal{K}(\mathfrak{E},\mathfrak{E};P,S,T)]\\
+&= \frac{1}{2}\mathcal{K}(\mathfrak{D},\mathfrak{D};R,S,T)
+\end{align*}
+ところで、$\mathcal{I}(\mathfrak{D},\mathfrak{D};R,S,T)=0$であるから、
+\begin{align*}
+0 &= \mathcal{K}(\mathfrak{D},\mathfrak{D};R,S,T) = \mathcal{J}(\mathfrak{D},\mathfrak{D};R,S,T)\\
+&= \int_\Omega \mathfrak{D}T\cdot(\mathcal{D}_{R}^*-\mathcal{D}_R)\mathfrak{D}Sdx = \int_\Omega T\cdot\mathfrak{D}^*(\mathcal{D}_{R}^*-\mathcal{D}_R)\mathfrak{D}Sdx
+\end{align*}
+となり、補題3.1.1より、
+\begin{equation*}
+\mathfrak{D}^*(\mathcal{D}_{R}^*-\mathcal{D}_R)\mathfrak{D} \equiv 0
+\end{equation*}
+となり、また$\mathfrak{D}$は非退化作用素であることから$\mathcal{D}_{R^*}-\mathcal{D}_R$となり、定理2.5.2よりこの補題が証明される。
+\end{proof}
+
+ 双ハミルトン系には、レナード・スキームとよばれる微分方程式系の階層を構成することができる。
+
+\begin{theorem}
+\begin{equation}
+u_t = K_1[u] = \mathfrak{D}\delta\mathcal{H}_1 = \mathfrak{E}\delta\mathcal{H}_0  %---(3.3.5)
+\end{equation}
+を双ハミルトン系、かつ$\mathfrak{D}$を非退化作用素であるとし、$K_0[u]=\mathfrak{D}\delta\mathcal{H}_0, \, \mathcal{R}=\mathfrak{E}\mathfrak{D}^{-1}$と定義する。ここで、
+\begin{equation*}
+K_n[u] = \mathcal{R}K_{n-1}[u] \qquad (n=1,2,\dots)
+\end{equation*}
+が定義できる（つまり、$K_{n-1}\in Im(\mathfrak{D})$）とき、以下を満たす汎関数の階層$\mathcal{H}_n$が存在する。なお、$(i)$は双ハミルトン系の階層となる。
+\begin{align}
+(i  &)\, u_t = K_n[u] = \mathfrak{D}\delta\mathcal{H}_n = \mathfrak{E}\delta\mathcal{H}_{n-1}\\  %---(3.3.6)
+(ii &)\, [v_{K_n},v_{K_m}] = 0\\  %---(3.3.7)
+(iii&)\, \{ \mathcal{H}_n,\mathcal{H}_m \}_\mathfrak{D} = 0 = \{ \mathcal{H}_n,\mathcal{H}_m \}_\mathfrak{E} \qquad (\forall m,n)  %---(3.3.8)
+\end{align}
+ また、(3.1.11)および(3.1.12)から、微分方程式系(3.3.6)には無限個の保存則が存在する。また3.3.7より、$K_n$は対称群の特性の階層である。
+\end{theorem}
+
+\begin{proof}
+ 補題3.3.2より、$(i)$は明らか。また(3.1.13)より$(ii)$と$(iii)$は同値であるので、$(iii)$を示せばよい。
+\begin{equation*}
+\{ \mathcal{H}_n,\mathcal{H}_m\}_\mathfrak{D} = prv_{K_m}(\mathcal{H}_n),\qquad \{ \mathcal{H}_n,\mathcal{H}_m\}_\mathfrak{E} = prv_{K_{m+1}}(\mathcal{H}_n)
+\end{equation*}
+であるから$\{\mathcal{H}_n,\mathcal{H}_m\}_\mathfrak{D}=\{\mathcal{H}_n,\mathcal{H}_{m-1}\}_\mathfrak{E}$が成立し、$n<m$であるとき、
+\begin{align*}
+\{\mathcal{H}_n,\mathcal{H}_m\}_\mathfrak{D}&=\{\mathcal{H}_n,\mathcal{H}_{m-1}\}_\mathfrak{E}=\{\mathcal{H}_{n+1},\mathcal{H}_{m-1}\}_\mathfrak{D}\\
+&=\{\mathcal{H}_{n+1},\mathcal{H}_{m-1}\}_\mathfrak{E}=\cdots=\{\mathcal{H}_k,\mathcal{H}_k\}_{\cdot}=0
+\end{align*}
+となる（最後の括弧積は、$m-n$が偶数のときは$\mathfrak{D}$、奇数のときは$\mathfrak{E}$の括弧積）。
+\end{proof}
+
+ 一般に、ハミルトン発展方程式系
+\begin{equation*}
+u_t = K[u] = \mathfrak{D}\delta\mathcal{H}
+\end{equation*}
+に対して、$H=\delta\mathcal{H}, \, P=\delta\mathcal{P}, \, Q=\delta\mathcal{Q}$とすると、$\mathfrak{D}$が交代随伴作用素であることから$pr\hat{v}_\mathcal{H}(\mathfrak{D})$もまた交代随伴作用素となり、
+\begin{align*}
+\int_\Omega [P\cdot pr\hat{v}_\mathcal{H}(\mathfrak{D})\cdot Q]dx &= \int_\Omega [P\cdot pr\hat{v}_\mathcal{Q}(\mathfrak{D})\cdot H - Q\cdot pr\hat{v}_\mathcal{P}(\mathfrak{D})\cdot H]dx\\
+&= \int_\Omega [P\cdot (pr\hat{v}_\mathcal{Q}(K)-\mathfrak{D}pr\hat{v}_\mathcal{Q}(H))\\
+&- Q\cdot (pr\hat{v}_\mathcal{P}(K)-\mathfrak{D}pr\hat{v}_\mathcal{P}(H))]dx\\
+&= \int_\Omega [P\cdot (\mathcal{D}_K\mathfrak{D}+\mathfrak{D}\mathcal{D}_{K}^*)Q]dx
+\end{align*}
+となる。よって、補題3.1.1により、
+\begin{equation}
+pr\hat{v}_\mathcal{H}(\mathfrak{D}) = prv_K(\mathfrak{D}) = \mathcal{D}_K\mathfrak{D}+\mathfrak{D}\mathcal{D}_{K}^*  %---(3.3.9)
+\end{equation}
+が成立する。よって、双ハミルトン系(3.3.5)に対し$\mathcal{R}=\mathfrak{E}\mathfrak{D}^{-1}$がうまく作用素の形で定義できたとき、
+\begin{align*}
+prv_{K_1}(\mathcal{R}) &= prv_{K_1}(\mathfrak{E})\mathfrak{D}^{-1}-\mathfrak{E}\mathfrak{D}^{-1}prv_{K_1}(\mathfrak{D})\mathfrak{D}^{-1}\\
+&= (\mathcal{D}_{K_1}\mathfrak{E}+\mathfrak{E}\mathcal{D}_{K_1}^*)\mathfrak{D}^{-1}-\mathfrak{E}\mathfrak{D}^{-1}(\mathcal{D}_{K_1}\mathfrak{E}+\mathfrak{E}\mathcal{D}_{K_1}^*)\mathfrak{E}^{-1}\\
+&= \mathcal{D}_{K_1}\mathfrak{R}+\mathfrak{R}\mathcal{D}_{K_1}^*
+\end{align*}
+よって(3.3.5)の解上で
+\begin{align*}
+(\mathcal{D}_t-\mathcal{D}_{K_1})\mathcal{R} &= \mathcal{R}\mathcal{D}_t+prv_{K_1}(\mathcal{R})-\mathcal{D}_K\mathcal{R}\\
+&= \mathcal{R}(\mathcal{D}_t-\mathcal{D}_K)
+\end{align*}
+が成立するから、定理2.2.1より$\mathcal{R}$は微分方程式系(3.3.5)に対する再帰作用素である。このような再帰作用素を通じた微分関数の階層を図式化すると、以下のようになる。
+\begin{align*}
+\xymatrix{
+{\delta \mathcal{H}_0} \ar[r]^{\mathcal{R}} \ar[d]_{\mathfrak{E}} & {\delta \mathcal{H}_1} \ar[r]^{\mathcal{R}} \ar[d]_{\mathfrak{E}} & {\delta \mathcal{H}_2} \ar[r]^{\mathcal{R}} \ar[d]_{\mathfrak{E}} & {\delta \mathcal{H}_3} \dots\\
+K_1[u] \ar[r]^{\mathcal{R}^{-1}} \ar[ur]^{\mathfrak{D}^{-1}} & K_2[u] \ar[r]^{\mathcal{R}^{-1}} \ar[ur]^{\mathfrak{D}^{-1}} & K_3[u] \ar[r]^{\mathcal{R}^{-1}} \ar[ur]^{\mathfrak{D}^{-1}} & K_4[u] \dots
+}
+\end{align*}
+
+\section{自明な双ハミルトン系}
+
+ $\mathfrak{D}=\mathcal{D}_x, \, \mathfrak{E}=\mathcal{D}_x^3$とおくと、これは自明なハミルトン対を形成する。ここで、
+\begin{equation}
+u_t = K_1[u] = \mathfrak{D}\mathcal{E}(-\frac{1}{2}u_x^2) = \mathfrak{E}\mathcal{E}(\frac{1}{2}u^2) = u_{xxx}  %---(3.4.1)
+\end{equation}
+は双ハミルトン系であり、これをここでは「自明な双ハミルトン系」とよぶことにする。(3.4.1)から生成する再帰作用素は、$\mathcal{R}=\mathfrak{E}\mathfrak{D}^{-1}=\mathcal{D}_x^2$となるので、$\mathcal{R}$は至る所で定義可能であり、よって$(\mathfrak{D},\mathfrak{E})$により双ハミルトン系を一つ形成すれば、定理3.3.1より、そこから無限個の微分方程式系の階層を導くことができる。(3.4.1)に対しては、
+\begin{equation}
+u_t = K_n[u] = u_{2n+1} \qquad (n=0,1,2,\dots )  %---(3.4.2)
+\end{equation}
+なる階層が形成される。ここで$(\mathfrak{D},\mathfrak{E})$より形成される双ハミルトン系の中で、(3.4.2)と本質的に異なるようなものが他に存在するかどうかを考える。つまり、
+\begin{equation*}
+u_t = \mathfrak{D}\mathcal{E}(H_1) = \mathfrak{E}\mathcal{E}(H_0) \qquad (H_1, H_0\in\mathcal{A})
+\end{equation*}
+において、$\mathcal{E}(H_0)$が$\{ u_{2j};j=0,1,2,\dots \}$の線形和として表される場合以外にあるかどうかを考える。$\mathcal{E}(H_1)=\mathfrak{D}_x^2\mathcal{E}(H_0)$であるから、$L=\mathfrak{D}_x^2\mathcal{E}(H_0)\in Im\mathcal{E}$である場合、つまり定理2.5.2より、
+\begin{equation*}
+\mathfrak{D}_L = \sum_m\frac{\partial}{\partial u_m}L\mathcal{D}_x^m
+\end{equation*}
+に対して、
+\begin{equation}
+\mathfrak{D}_L = \mathfrak{D}_L^*  %---(3.4.3)
+\end{equation}
+を満たすような$H_0$を探すことにする。ところで一般の自己随伴微分作用素についてつぎのことが成立する。
+
+\begin{lemma}
+ 2j階の自己随伴微分作用素は、
+\begin{align*}
+\mathcal{S} &= \mathcal{D}_x^jS[u]\mathcal{D}_x^j\\
+&= S[u]\mathcal{D}_x^{2j}+\binom{j}{1}(\mathcal{D}_xS[u])\mathcal{D}_x^{2j-1}+\dots +\binom{j}{j}(\mathcal{D}_x^jS[u])\mathcal{D}_x^j
+\end{align*}
+となり、よって$\mathcal{S}=\sum_j\mathcal{S}_j$という形で表すことができる。ゼロ階の場合は任意の微分関数である。また、奇数階の自己随伴微分作用素は存在しない。
+\end{lemma}
+
+ $\mathfrak{D}_L$がゼロ階の自己随伴作用素であるためには、フレシェ微分の形から$L=L(t,x,u)=\mathcal{D}_x^2\mathcal{E}(H_0)$とならなければならず、$\mathcal{E}(H_0)=q(t,x)$となる場合以外にはない。一般には、微分多項式の場合で考えるから$\mathcal{E}(H_0)$は定数関数であり、これは(3.4.2)の中に入っている。
+
+ つぎに$\mathfrak{D}_L$が２階の自己随伴作用素であるとき、$\mathfrak{D}_L=\mathcal{S}_1$と書ける場合があるかどうかを調べる。このとき、フレシェ微分の形から$L=L(t,x,u,u_x,u_{xx})$とならなければならない。また、
+\begin{align}
+\frac{\partial L}{\partial u_x} &= \mathcal{D}_x\frac{\partial L}{\partial u_{xx}}\nonumber\\
+&= \frac{{\partial}^2 L}{\partial x\partial u_{xx}} + \frac{{\partial}^2 L}{\partial u\partial u_{xx}}\cdot u_x + \frac{{\partial}^2 L}{\partial u_x\partial u_{xx}}\cdot u_{xx} + \frac{{\partial}^2 L}{\partial u_{xx}^2}\cdot u_{xxx} + \dots  %---(3.4.4)
+\end{align}
+となり、$\frac{{\partial}^2 L}{\partial u_{xx}^2}=0$。よって、
+\begin{equation*}
+L = L_1(t,x,u,u_x)u_{xx} + L_2(t,x,u,u_x)
+\end{equation*}
+と表現される。さらにこれを(3.4.4)に代入して、
+\begin{equation}
+\frac{\partial L_2}{\partial u_x} = \frac{\partial L_1}{\partial x}+\frac{\partial L_1}{\partial u}\cdot u_x  %---(3.4.5)
+\end{equation}
+を得る。ところで$L=\mathcal{D}_x^2\mathcal{E}(H_0)$であるから、$\mathcal{E}(H_0)=\sum_ku^k$でなければならず、(3.4.5)より$k=0$または$k=1$。よって、本質的には自明な双ハミルトン系の階層と同じものになる。
+
+ さらに数学的帰納法の仮定として、$\mathfrak{D}_L$が2k階の自己随伴作用素であるとき、$\mathfrak{D}_L=\mathcal{S}_k$と表現されるとする。このとき、フレシェ微分の形から$L=L(t,x,u,u_x,\dots,u_{2k})$とならなければならず、また、
+\begin{align}
+\frac{\partial L}{\partial u_{2k-1}} &= \binom{k}{1}\mathcal{D}_x\frac{\partial L}{\partial u_{2k}}\nonumber\\
+&\vdots\nonumber\\
+\frac{\partial L}{\partial u_k} &= \binom{k}{k}\mathcal{D}_x^k\frac{\partial L}{\partial u_{2k}}  %---(3.4.6)
+\end{align}
+が成立する。(3.4.6)の最後の式は、
+\begin{align*}
+\frac{\partial L}{\partial u_k}  &= \mathcal{D}_x^{k-1}(\frac{{\partial}^2 L}{\partial x\partial u_{2k}} + \frac{{\partial}^2 L}{\partial u\partial u_{2k}}\cdot u_x + \dots + \frac{{\partial}^2 L}{\partial u_{k+1}\partial u_{2k}}\cdot u_{k+2}\\
+&+ \dots + \frac{{\partial}^2 L}{\partial u_{2k}^2}\cdot u_{2k+1})\\
+&= \dots
+\end{align*}
+と展開され、係数の関係より、
+\begin{equation*}
+L = L_1(t,x,u,u_x,\dots ,u_k)u_{2k} + \bar{L}(t,x,u,u_x,\dots ,u_k)
+\end{equation*}
+と表現される。さらにこれを(3.4.6)の最後の式に代入すると、
+\begin{equation*}
+\frac{\partial L}{\partial u_{2k-1}} = \frac{\partial \bar{L}}{\partial u_{2k-1}} = k(\frac{\partial L_1}{\partial x}+\frac{\partial L_1}{\partial u}\cdot u_x + \frac{\partial L_1}{\partial u_k}\cdot u_{k+1})
+\end{equation*}
+となる。よって、
+\begin{align}
+L &= L_1(t,x,u,u_x,\dots ,u_k)u_{2k} + L_2(t,x,u,u_x,\dots ,u_{k+1})u_{2k-1} + \dots \nonumber\\
+&= L_1u_{2k} + k(\mathcal{D}_xL_1)u_{2k-1} + \dots  %---(3.4.7)
+\end{align}
+となり、残りの項は$u_{2k-2}$まで従属する。ところで$L=\mathcal{D}_x^2\mathcal{E}(H_0)$であるから、
+\begin{equation*}
+\mathcal{E}(H_0) = L_1u_{2k-2} + (k-2)(\mathcal{D}_xL_1)u_{2k-3} + \dots
+\end{equation*}
+となり、残りの項は$u_{2k-4}$まで従属する。よって、
+\begin{equation*}
+\mathfrak{D}_{\mathcal{E}(H_0)} = L_1\mathcal{D}_x^{2k-2} + (k-2)(\mathcal{D}_xL_1)\mathcal{D}_x^{2k-3} + \dots
+\end{equation*}
+であり、これは自己随伴作用素になる。また$\mathfrak{D}_L$が2k階であるためには、上述の作用素は少なくとも2k-1階でなければならない。よって、
+\begin{equation*}
+(k-2)(\mathcal{D}_xL_1) = \binom{k-1}{1}\mathcal{D}_xL_1 = (k-1)\mathcal{D}_xL_1
+\end{equation*}
+を得、$L_1=\alpha (t)$でなければならない。よって、微分多項式であることから、
+\begin{equation}
+\mathcal{E}(H_0) = u_{2k-2} + \bar{E}(t,x,u,u_x,\dots ,u_{2k-4})  %---(3.4.8)
+\end{equation}
+となる。$\mathcal{E}(H_0)=u_{2k-2}$の場合は自明な双ハミルトン系の階層の中に入っており、数学的帰納法よりつぎの結果を得る。
+
+\begin{theorem}
+ $(\mathcal{D}_x,\mathcal{D}_x^3)$というハミルトン対によって表される双ハミルトン系は、本質的には、すべてこの双ハミルトン系により生成されるレナード・スキームの中の線形和として表される。
+\end{theorem}
+
+\section{KdV方程式に対する双ハミルトン系}
+
+ $\mathfrak{D}=\mathcal{D}_x, \, \mathfrak{E}=\mathcal{D}_x^3+\frac{2}{3}u\mathcal{D}_x+\frac{1}{3}u_x$とおくと、$(\mathfrak{D},\mathfrak{E})$はハミルトン対をなす。KdV方程式(2.1.9)は、
+\begin{equation}
+u_t = K_1[u] = \mathfrak{D}\mathcal{E}(\frac{1}{6}u^3-\frac{1}{2}u_x^2) = \mathfrak{E}\mathcal{E}(\frac{1}{2}u^2)  %--(3.5.1)
+\end{equation}
+と表され、これは双ハミルトン系である（$K_0[u]=\mathfrak{D}\mathcal{E}(\frac{1}{2}u^2)$）。ここである$H_0\in\mathcal{A}$に対し、$L_0[u]=\mathfrak{D}\mathcal{E}(H_0)$とし、
+\begin{equation*}
+u_t = L_1[u] = \mathfrak{D}\mathcal{E}(H_1) = \mathfrak{E}\mathcal{E}(H_0) \qquad (\exists H_1\in\mathcal{A})
+\end{equation*}
+が存在し、かつ
+\begin{equation*}
+\mathcal{R}=\mathfrak{E}\mathfrak{D}^{-1}=\mathcal{D}_x^2+\frac{2}{3}u+\frac{1}{3}u_x\mathcal{D}_x^{-1}
+\end{equation*}
+に対し、
+\begin{equation*}
+L_n[u] = \mathcal{R}^nL_0[u]
+\end{equation*}
+が定義可能であるとき、定理3.3.1よりレナード・スキームが形成されることがわかる。数学的帰納法の仮定として$n$の場合まで成立しているものとしたとき、
+\begin{align*}
+L_{n+1}[u] &= \mathcal{R}L_n[u]\\
+&= \mathcal{D}_x[\mathcal{D}_xL_n+\frac{1}{3}u\mathcal{D}_x^{-1}L_n+\frac{1}{3}\mathcal{D}_x^{-1}(uL_n)]
+\end{align*}
+となり、よって$uL_n\in Im\mathcal{D}_x$であれば$L_{n+1}\in Im\mathcal{D}_x=Im\mathfrak{D}$。ここで$L=K$である場合は無限個の階層が作れるということがつぎのように証明される。
+\begin{equation*}
+\mathcal{R}^* = \mathcal{D}_x^2+\frac{2}{3}u-\frac{1}{3}\mathcal{D}_x^{-1}u_x = \mathcal{D}_x^{-1}\mathcal{R}\mathcal{D}_x
+\end{equation*}
+であるから、
+\begin{align*}
+uK_n[u] &= u\mathcal{R}^n(u_x)\\
+&= u_x(\mathcal{R}^*)^n(u)+\mathcal{D}_xA\\
+&= u_x\mathcal{D}_x^{-1}\mathcal{R}^n(u_x)+\mathcal{D}_xA \qquad (\exists A\in\mathcal{A})
+\end{align*}
+となる。ここで$(\mathcal{D}_x^{-1})^*=-\mathcal{D}_x^{-1}$であるので、
+\begin{equation*}
+u_x\mathcal{D}_x^{-1}\mathcal{R}^n(u_x) = uK_n+\mathcal{D}_xB \qquad (\exists B\in\mathcal{A})
+\end{equation*}
+となる。これを前式に代入して$uK_n\in Im\mathcal{D}_x$となる。これよりKdV階層とよばれる双ハミルトン系の系列を定めることができ、
+\begin{align*}
+K_0 &= u_x\\
+K_1 &= u_{xxx}+uu_x\\
+K_2 &= u_5+\frac{10}{3}u_xu_{xx}+\frac{5}{3}uu_{xxx}+\frac{5}{6}u^2u_x\\
+&\vdots
+\end{align*}
+となる。(2.2.2)において$Q_0=K_0$であるから、これは(2.2.2)に示された対称変換の特性に係る階層でもある。
+
+ つぎに3.4節でやったのと同様に、この$\{ K_n \}$と本質的に異なる形で双ハミルトン系をなす$L_1[u]$が存在するかという問題を考えたい。つまり$L_0[u]=\mathfrak{D}\mathcal{E}(H_0)$に対して、
+\begin{equation}
+L_1[u] = \mathcal{R}L_0[u] \in Im\mathfrak{D} = Im\mathcal{D}_x  %--(3.5.2)
+\end{equation}
+であり、かつまた
+\begin{equation}
+\mathfrak{D}^{-1}L_1[u] \in Im\mathcal{E}  %--(3.5.3)
+\end{equation}
+が成立するとき、$L_1$は双ハミルトン系に表されるため、これを成立さすような$H_0\in\mathcal{A}$を探すことである。
+
+\begin{lemma}
+ 上述の仮定のもとで、
+\begin{equation*}
+\int_\Omega uL_n[u]dx = -\int_\Omega \mathcal{E}(H_0)\mathcal{R}^n(u_x)dx
+\end{equation*}
+が成立する。
+\end{lemma}
+
+\begin{proof}
+ $\mathcal{A} / \mathcal{D}_x(\mathcal{A})$上において、
+\begin{align*}
+uL_n &= u\mathcal{R}^nL_0 = L_0(\mathcal{R}^*)^n(u)\\
+&= L_0\mathcal{D}_x^{-1}\mathcal{R}^n(u_x) = -\mathcal{E}(H_0)\mathcal{R}^n(u_x) 
+\end{align*}
+となることから明らか。
+\end{proof}
+
+ よって$uL_n\in Im\mathcal{D}_x$と$\mathcal{E}(H_0)\mathcal{R}^n(u_x)\in Im\mathcal{D}_x$となることは同値。また(2.5.8)より、
+\begin{equation}
+\mathcal{E}[\mathcal{E}(H_0)\mathcal{R}^n(u_x)] = \mathcal{E}[\mathcal{E}(H_0)(u_{xxx}+uu_x)] = 0  %--(3.5.4)
+\end{equation}
+であることと(3.5.2)は同値。ここで低次元でKdV階層に近いところにおいては、(3.5.4)から$L_0$は$\{ K_n \}$の線形和として表されることが、つぎのような手順で示される。
+\begin{equation}
+E[u] = \sum_ia_iu^i + \sum_jb_ju_{2j} + \sum_kd_k(u_x^k+kuu_x^{k-2}u_{xx}) \qquad (a_i,b_j,d_k\text{は定数})
+\end{equation}
+とおくと$E[u]\in Im\mathcal{E}$がいえる。ここで$u^i(uu_x)\in Im\mathcal{D}_x, \, u_{2j}u_{xxx}\in Im\mathcal{D}_x$であるので、$\mathcal{A} / \mathcal{D}_x(\mathcal{A})$上において、
+\begin{align*}
+\mathcal{E}(H_0)\mathcal{R}^n(u_x) &= \sum_{i,j,k}[a_iu^iu_{xxx} + b_ju_{2j}uu_x\\
+&+ d_k(u_x^k+kuu_x^{k-2}u_{xx})(u_{xxx}+uu_x)]
+\end{align*}
+となり、この左辺を$M[u]$とおく。$\mathcal{E}(M[u])=0$を満たすように各係数を制限すると、まず次数の関係から$a_i=0\, (i>3), \, b_j=0\, (j>2), d_k=0\, (i>2)$であり、残りの項から$2a_2=b_1, \, 3a_3=d_2, \, 5b_2=6d_2$でなければならない。よって$c_1=a_0+d_0, \, c_2=a_1+b_0, \, c_3=b_1=2a_2, \, c_4=b_2=\frac{5}{6}d_2=\frac{18}{5}a_3$とおけば、
+\begin{align*}
+E[u] = c_1+c_2u+c_3(u_{xx}+\frac{1}{2}u^2)+c_4(u_4+\frac{5}{6}u_{x^2}+\frac{5}{3}uu_{xx}+\frac{5}{18}u^3)
+\end{align*}
+となり、よって、
+\begin{equation*}
+E[u] = c_2K_0[u]+c_3K_1[u]+c_4K_2[u]
+\end{equation*}
+から、つぎの命題が成立する。
+
+\begin{proposition}
+ (3.5.4)により、$L[u]=\mathcal{D}_xE[u]$としたとき、$L[u]$が双ハミルトン系をなす場合、$L[u]$は$\{ K_n \}$の線形和として表される。
+\end{proposition}
+
+\begin{remark*}
+ 一般の$L[u]=\mathcal{D}_x\mathcal{E}(H_0)$についても同様となるのではないかということが予想され、このことを証明するためには数学的帰納法によらなければならないのだが、$K_n$の形を一般的に表すことができないことから困難が生じ、3.4節の場合のようにうまく決定することができない。
+\end{remark*}
+
+\newpage
+
+\begin{thebibliography}{99}
+\bibitem{Carillo} C. F. Carillo, B. Fuckssteiner,
+''Non Commutable Symmetries and New Solutions of The Harry Dym Equation'' Nonlinear Evolution Equation: Integrability and Special Methods, Manchester Univ. Press, 1990, 351-365.
+\bibitem{Dickey} L. A. Dickey,
+''Soliton Equations and Hamiltonian Systems'' Adv. Series in Math. Phys. 26, World Scientific, 1991.
+\bibitem{Gel'fand1} I. M. Gel'fand, I. Ya. Dorfman,
+''Hamiltonian Operators and Algebraic Structures Related to Them'' Func. Anal. Appl. 13, 1979.
+\bibitem{Gel'fand2} I. M. Gel'fand, I. Ya. Dorfman,
+''The Schouten Bracket and Hamiltonian Operators'' Func. Anal. Appl. 14, 1979, 71-74.
+\bibitem{Magri} F. Magri,
+''A Simple Model of the Integrable Hamiltonian Equation'' J. Math. Phys. 19, 1978, 1156-1162.
+\bibitem{Naumkin} P. I. Naumkin, I. A. Shishmarev,
+''The Step-Decay Ploblem for The Korteweg-deVries-Burgers Equation'' Func. Anal. Ego Phil. 25-1, 1991, 21-32.
+\bibitem{Olver1} P. J. Olver,
+''Evolution Equation Possessing Infinitely Many Symmetries'' J. Math. Phys. 18, 1977, 1212-1215.
+\bibitem{Olver2} P. J. Olver,
+''On the Hamiltonian Structure of Evolution Equations'' Math. Proc. Camb. Phil. Soc. 88, 1980, 71-88.
+\bibitem{Olver3} P. J. Olver,
+''A Nonlinear Hamiltonian Structure for the Euler Equations'' J. Math. Anal. Appl. 89, 1982, 233-250.
+\bibitem{Olver4} P. J. Olver,
+''Application of Lie Groups to Differential Equations'' GTM Vol. 107, Springer-Verlag, 1986.
+\bibitem{Olver5} P. J. Olver,
+''Darboux Theorem for Hamiltonian Differential Operators'' J. Diff. Eq. 71, 1988, 10-33.
+\bibitem{Tanaka} 田中\ 俊一, 伊達\ 悦郎,
+''KdV方程式\ 非線形数理物理入門'' 紀伊國屋書店, 1979.
+\bibitem{Chiba} ＊千葉\ 逸人,
+''可積分系とPainleve方程式'' 数理科学, 634, Apr. 2016.
+\bibitem{Takenawa} ＊竹縄\ 知之,
+''リーの理論と可積分性\ 解析学におけるガロアの影響'' 現代思想, 39-5, Apr. 2011, 150-163.
+\bibitem{Omori} ＊大森\ 英樹,
+''数学のなかの物理学\ 幾何学的量子化に向かって'' 東京大学出版会, 2004.
+\end{thebibliography}
+
+（注） ＊︎印の文献は、リバイス時に追加。
+\rmfamily
+\end{document}
