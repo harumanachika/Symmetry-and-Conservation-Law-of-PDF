@@ -1,0 +1,150 @@
+%%% 論文（A）と一般記事用（B）のテンプレート
+%%% 必要に応じてどちらかを使ってください．
+
+%%% A. 論文
+\documentclass[paper]{jrsj}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+%\usepackage[dvipdfmx]{graphicx}
+%\usepackage[dvips]{graphicx}
+\usepackage{amsmath}
+
+%% 頁（指定する必要なし）
+%\setcounter{page}{1}
+%% 通巻頁（指定する必要なし）
+%\volpage{101}
+
+%% 論文の種類を記入（学術・技術論文 / 学術論文 / 討論など）
+\typeofpaper{学術・技術論文}
+%% 発行年（コメントアウトしておく）
+%\Year{2018}
+%% 巻数（コメントアウトしておく）
+%\Vol{36}
+%% 号数（コメントアウトしておく）
+%\No{1}
+%% 邦文題名
+\title{}
+%% 邦文副題名（必要な場合のみ）
+\subtitle{}
+%% 英文題名
+\etitle{}
+%% 英文副題名（必要な場合のみ）
+\esubtitle{}
+%% 著者のリスト
+\authorlist{%
+ \authorentry{姓 名}{First Second}{label}
+ \authorentry{}{}{}
+}
+%% 著者の所属
+\affiliate[label]{和文所属}{英文所属}
+\affiliate[]{}{}
+
+%% 原稿受付日（記述しない，空欄に）
+\received{}
+%% 本論文は××性（××××分野）で評価されました．
+\evaluated{}
+
+\begin{document}
+%% 英文要旨
+\begin{abstract}
+\end{abstract}
+%% 英文キーワード
+\begin{keywords}
+\end{keywords}
+\maketitle
+
+%% 本文
+
+%% 謝辞（必要な場合のみ）
+\begin{acknowledgements}
+\end{acknowledgements}
+
+%% 文献
+\begin{thebibliography}{99}
+\bibitem{}
+\end{thebibliography}
+
+%% 付録（必要な場合のみ）
+\appendix 
+
+%% 著者紹介（総合論文，学術・技術論文，解説論文のみ）
+\begin{biography}
+\profile{m}{名前（Name）}{紹介文}
+%\profile{}{}{}
+%\profile{}{}{}
+\end{biography}
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% B. 一般記事
+\documentclass[article]{jrsj}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+%\usepackage[dvipdfmx]{graphicx}
+%\usepackage[dvips]{graphicx}
+\usepackage{amsmath}
+
+%% 頁（指定する必要なし）
+%\setcounter{page}{1}
+%% 通巻頁（指定する必要なし）
+%\volpage{101}
+
+%% 一般記事の種類を記入（解説，展望，講座など）
+\typeofarticle{解説}% 
+%% 発行年（コメントアウトしておく）
+%\Year{2018}
+%% 巻数（コメントアウトしておく）
+%\Vol{36}
+%% 号数（コメントアウトしておく）
+%\No{1}
+%% 邦文題名
+\title{}
+%% 邦文副題名（必要な場合のみ）
+\subtitle{}
+%% 英文題名
+\etitle{}
+%% 英文副題名（必要な場合のみ）
+\esubtitle{}
+%% 著者のリスト
+\authorlist{%
+ \authorentry{姓 名}{First Second}{label}
+ \authorentry{}{}{}
+}
+%% 著者の所属
+\affiliate[label]{和文所属}{英文所属}{和文住所}{英文住所}
+\affiliate[]{}{}{}{}
+
+%% 原稿受付日（記述しない，空欄に）
+\received{}
+%% 英文キーワード
+\keyword{}
+
+\begin{document}
+\maketitle
+
+%% 本文
+
+%% 謝辞（必要な場合のみ）
+\begin{acknowledgements}
+\end{acknowledgements}
+
+%% 文献
+\begin{thebibliography}{99}
+\bibitem{}
+\end{thebibliography}
+
+%% 付録（必要な場合のみ）
+\appendix 
+
+%% 著者紹介（総合論文，学術・技術論文，解説論文のみ）
+\begin{biography}
+\profile{m}{名前（Name）}{紹介文}
+%\profile{}{}{}
+%\profile{}{}{}
+\end{biography}
+
+\end{document}
