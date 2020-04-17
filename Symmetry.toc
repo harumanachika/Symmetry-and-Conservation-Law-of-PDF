@@ -1,0 +1,14 @@
+\contentsline {chapter}{\numberline {1}序文}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}対称群と保存則}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}幾何学的対称群と一般化対称群}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}再帰作用素}{8}{section.2.2}%
+\contentsline {section}{\numberline {2.3}保存則}{9}{section.2.3}%
+\contentsline {section}{\numberline {2.4}変分対称群とネーターの定理}{11}{section.2.4}%
+\contentsline {section}{\numberline {2.5}変分複体}{12}{section.2.5}%
+\contentsline {section}{\numberline {2.6}KdV-Burgers方程式の対称群}{18}{section.2.6}%
+\contentsline {chapter}{\numberline {3}発展方程式のハミルトン系}{20}{chapter.3}%
+\contentsline {section}{\numberline {3.1}ポワソン括弧積とハミルトン作用素}{20}{section.3.1}%
+\contentsline {section}{\numberline {3.2}一階のハミルトン作用素とダルブーの定理}{25}{section.3.2}%
+\contentsline {section}{\numberline {3.3}双ハミルトン系}{27}{section.3.3}%
+\contentsline {section}{\numberline {3.4}自明な双ハミルトン系}{30}{section.3.4}%
+\contentsline {section}{\numberline {3.5}KdV方程式に対する双ハミルトン系}{32}{section.3.5}%
